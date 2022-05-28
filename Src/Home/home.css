@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    padding-top: 20px;
+    padding-bottom: 50px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+
+    --activityWidth: 350px;
+}
+
+#activityGrid {
+    height: auto;
+    width: max-content;
+
+    display: grid;
+    grid-template-columns: repeat(1, var(--activityWidth)); /*Grid columns are calculated in JS, HOWEVER THIS SPECIFIC PROPERTY DOES NOT SEEM TO GET UPDATED*/
+    gap: 50px;
+    
+    place-items: center;
+    margin: 0 auto;
+}
+activity {
+    height: 400px;
+    width: 100%;
+
+    background-color: rgb(225, 225, 225);
+    border-radius: 20px;
+}
+activity:hover {
+    background-color: rgb(190, 190, 190);
+}
