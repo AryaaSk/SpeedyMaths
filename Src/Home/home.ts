@@ -1,4 +1,4 @@
-const cssSetup = () => {
+const CSSSetup = () => {
     //Add grid columns to the Activity Grid
     const activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
     const gridColumns = Math.floor(window.innerWidth / activityWidth);
@@ -6,7 +6,42 @@ const cssSetup = () => {
     document.getElementById("activityGrid")!.style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 }
 
-const loadSVGs = () => {
+interface Activity {
+    type: string, //lowercase
+    title: string,
+    image: string, //e.g. Addition for Addition.svg
+    imageColour: string,
+    imageHeight: string
+}
+const ACTIVITIES: Activity[] = [
+    { type: "addition", title: "Addition", image: "Addition", imageColour: "#123456", imageHeight: "70%" },
+    { type: "subtraction", title: "Subtraction", image: "Subtraction", imageColour: "#123456", imageHeight: "20%" },
+    { type: "multiplication", title: "Multiplication", image: "Multiplication", imageColour: "#123456", imageHeight: "70%" },
+    { type: "division", title: "Division", image: "Division", imageColour: "#123456", imageHeight: "70%" },
+    { type: "algebra", title: "Algebra", image: "Algebra", imageColour: "#123456", imageHeight: "70%" }
+]
+const LoadActivities = () => {
+    const activityGrid = document.getElementById("activityGrid")!;
+    activityGrid.innerHTML = "";
+    
+    for (const activity of ACTIVITIES) {
+        const element = document.createElement("activity");
+        element.dataset["type"] = activity.type;
+        element.innerHTML = 
+        `
+            <div>
+                <h2>${activity.title}</h2>
+            </div>
+            <div style='height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;'>
+                <img data-src="${activity.image}" data-colour="${activity.imageColour}" data-height="${activity.imageHeight}">
+            </div>
+        `;
+
+        activityGrid.append(element);
+    }
+}
+
+const LoadSVGs = () => {
     const images = document.getElementsByTagName('img')!;
     for (const image of images) {
         const name = image.dataset["src"]; //get image name from data attributes
@@ -66,18 +101,22 @@ const loadSVGs = () => {
     }
 }
 
-const initInitalizers = () => {
-    const activities = document.getElementsByTagName("activity");
-    for (const activity of activities) {
-        const type = (<HTMLElement>activity).dataset["type"];
-        console.log(type)
+const InitListeners = () => {
+    const elements = document.getElementsByTagName("activity");
+    for (const element of elements) {
+        const type = (<HTMLElement>element).dataset["type"];
+        (<HTMLElement>element).onclick = () => {
+            const url = `/Src/multiplayer?type=${type}`
+            console.log("Go to: " + url);
+        }
     }
 }
 
 const main = () => {
-    cssSetup();
-    loadSVGs();
-    initInitalizers();
+    CSSSetup();
+    LoadActivities();
+    LoadSVGs();
+    InitListeners();
 }
 
 main();

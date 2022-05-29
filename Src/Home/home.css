@@ -25,6 +25,10 @@ activity {
 
     background-color: rgb(225, 225, 225);
     border-radius: 20px;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: max-content auto 20px;
 }
 activity:hover {
     background-color: rgb(190, 190, 190);
