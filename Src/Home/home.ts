@@ -126,7 +126,8 @@ const OpenPopup = (activity: Activity) => {
         console.log("Go to tutorial for: " + activity.type);
     }
     document.getElementById("singlePlayer")!.onclick = () => {
-        console.log("Go to single player for: " + activity.type);
+        const url = `/Src/Quiz/quiz.html?type=${activity.type}&&gameType=singlePlayer`
+        location.href = url;
     }
     document.getElementById("multiplayer")!.onclick = () => {
         console.log("Go to multiplayer for: " + activity.type);
@@ -136,15 +137,13 @@ const ClosePopup = () => {
     document.getElementById("popup")!.style.bottom = "-100vh"
 }
 
-const MAIN = () => {
+const MAIN_HOME = () => {
     ResizeGrid();
     document.body.onresize = () => { ResizeGrid(); }
 
     LoadActivities();
     LoadSVGs();
     LoadListeners();
-
-    OpenPopup(ACTIVITIES[0]);
 }
 
-MAIN();
+MAIN_HOME();
