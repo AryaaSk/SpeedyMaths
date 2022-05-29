@@ -126,7 +126,7 @@ const OpenPopup = (activity: Activity) => {
         console.log("Go to tutorial for: " + activity.type);
     }
     document.getElementById("singlePlayer")!.onclick = () => {
-        const url = `/Src/Quiz/quiz.html?type=${activity.type}&&gameType=singlePlayer`
+        const url = `/Src/Quiz/quiz.html?type=${activity.type}&&title=${activity.title}&&gameType=singlePlayer`
         location.href = url;
     }
     document.getElementById("multiplayer")!.onclick = () => {

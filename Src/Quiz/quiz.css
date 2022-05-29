@@ -13,7 +13,7 @@ body {
 
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: max-content auto 20px;
+    grid-template-rows: max-content max-content auto 100px;
     place-items: center;
 }
 
@@ -38,6 +38,8 @@ body {
     color: var(--fontColour);
     font-size: 5rem;
     word-break: break-all;
+
+    transition: 500ms;
 }
 .option:hover {
     background-color: rgb(190, 190, 190);

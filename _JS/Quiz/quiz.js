@@ -10,66 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 //Generating Question Callbacks
 const QUIZ_LENGTH = 10;
-const OPTION_COUNT = 4;
-const INCORRECT_ANSWER_VICINITY = 50;
-const GenerateRandomNumbers = (range, quantity) => {
-    const numberList = [];
-    for (let i = 0; i != quantity; i += 1) {
-        const offset = Math.round((Math.random() * (range[1] - range[0])));
-        const num = range[0] + offset;
-        numberList.push(num);
-    }
-    return numberList;
-};
-const GenerateIncorrectAnswer = (answer, vicinity) => {
-    const answerOffset = Math.floor(Math.random() * vicinity * 2); //incorrect answer will be within the vicinity of the answer, e.g. vicinity = 100, incorrect answer will always be within 100 of the answer
-    const incorrectAnswer = answer - vicinity + answerOffset;
-    return incorrectAnswer;
-};
-function shuffle(array) {
-    let currentIndex = array.length, randomIndex;
-    while (currentIndex != 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
-        [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]
-        ];
-    }
-    return array;
-}
-const PackageQuestion = (question, answer) => {
-    let possibleOptions = [];
-    possibleOptions.push(answer);
-    possibleOptions.push(GenerateIncorrectAnswer(answer, INCORRECT_ANSWER_VICINITY));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, INCORRECT_ANSWER_VICINITY));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, INCORRECT_ANSWER_VICINITY));
-    possibleOptions = shuffle(possibleOptions);
-    return { question: question, answer: answer, options: possibleOptions };
-};
-const ADDITION_QUESTION = () => {
-    const [num1, num2] = GenerateRandomNumbers([0, 100], 2);
-    const question = `${num1} + ${num2}`;
-    const answer = num1 + num2;
-    return PackageQuestion(question, answer);
-};
-const SUBTRACTION_QUESTION = () => {
-    const [num1, num2] = GenerateRandomNumbers([0, 100], 2);
-    const question = `${num1} - ${num2}`;
-    const answer = num1 - num2;
-    return PackageQuestion(question, answer);
-};
-const MULTIPLICATION_QUESTION = () => {
-    const [num1, num2] = GenerateRandomNumbers([0, 15], 2);
-    const question = `${num1} * ${num2}`;
-    const answer = num1 * num2;
-    return PackageQuestion(question, answer);
-};
-const DIVISION_QUESTION = () => {
-    const [num1, num2] = GenerateRandomNumbers([1, 15], 2);
-    const result = num1 * num2;
-    const question = `${result} / ${num1}`; //So that we avoid giving the user a decimal number
-    const answer = num2;
-    return PackageQuestion(question, answer);
+const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
+const InitHTML = () => {
+    //@ts-expect-error
+    const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
+    //@ts-expect-error
+    const quizTitle = params.title;
+    document.getElementById("title").innerText = quizTitle;
 };
 const CreateQuestions = () => {
     //@ts-expect-error
@@ -98,41 +45,52 @@ const CreateQuestions = () => {
     }
     return questions;
 };
-const LoadQuestion = (question) => {
+const DoQuestion = (question) => {
+    let wrong = 0;
     const promise = new Promise((resolve) => {
         document.getElementById("question").innerText = question.question;
         document.getElementById("option1").innerText = String(question.options[0]);
         document.getElementById("option2").innerText = String(question.options[1]);
         document.getElementById("option3").innerText = String(question.options[2]);
         document.getElementById("option4").innerText = String(question.options[3]);
+        document.getElementById("option1").style.color = "var(--fontColour)";
+        document.getElementById("option2").style.color = "var(--fontColour)";
+        document.getElementById("option3").style.color = "var(--fontColour)";
+        document.getElementById("option4").style.color = "var(--fontColour)";
         document.getElementById("option1").onclick = () => { clickedAnswer(0); };
         document.getElementById("option2").onclick = () => { clickedAnswer(1); };
         document.getElementById("option3").onclick = () => { clickedAnswer(2); };
         document.getElementById("option4").onclick = () => { clickedAnswer(3); };
         const clickedAnswer = (index) => {
             if (question.options[index] == question.answer) {
-                resolve(true);
+                resolve(wrong);
             }
             else {
-                resolve(false);
+                //choice was not correct, so don't move on and highlight option red
+                document.getElementById("option" + (index + 1)).style.color = "red";
+                setTimeout(() => { document.getElementById("option" + (index + 1)).style.color = "var(--fontColour)"; }, 2000);
+                wrong += 1;
             }
         };
     });
     return promise;
 };
 const DoQuiz = (questions) => __awaiter(void 0, void 0, void 0, function* () {
-    let score = 0;
+    let totalWrong = 0;
     for (const question of questions) {
-        const correct = yield LoadQuestion(question);
-        if (correct == true) {
-            score += 1;
-        }
+        const wrong = yield DoQuestion(question);
+        totalWrong += wrong;
     }
-    return score;
+    return totalWrong;
 });
 const MAIN_QUIZ = () => __awaiter(void 0, void 0, void 0, function* () {
+    InitHTML();
+    const startTime = Date.now();
     const questions = CreateQuestions();
-    const score = yield DoQuiz(questions);
-    console.log(score);
+    const totalWronglyAnswered = yield DoQuiz(questions);
+    const endTime = Date.now();
+    const timeTaken = ((endTime - startTime) + (totalWronglyAnswered * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
+    console.log(timeTaken);
+    //show done button which takes user back to their previous screen
 });
 MAIN_QUIZ();
