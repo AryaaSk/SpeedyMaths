@@ -19,7 +19,7 @@ body {
     place-items: center;
     margin: 0 auto;
 }
-activity {
+.activity {
     height: 400px;
     width: 100%;
 
@@ -30,6 +30,47 @@ activity {
     grid-template-columns: 100%;
     grid-template-rows: max-content auto 20px;
 }
-activity:hover {
+.activity:hover {
     background-color: rgb(190, 190, 190);
+}
+.activityTitle {
+    color: #123456;
+}
+
+#popup {
+    height: 100vh;
+    width: 100%;
+
+    position: fixed;
+    bottom: -100vh;
+    left: 0;
+    right: 0;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 20% 80%;
+
+    /*background-color: #00000050;*/
+    transition: 500ms;
+}
+#popupContent {
+    height: 100%;
+    width: 100%;
+    padding: 5px;
+
+    background-color: rgb(245, 245, 245);
+    box-shadow: 150px 150px 150px 150px #888888;
+    border-radius: 15px;
+}
+.popupButton {
+    height: 100px;
+    width: 90%;
+    margin-bottom: 50px;
+
+    background-color: #123456;
+    border: none;
+    border-radius: 20px;
+    color: white;
+    font-size: x-large;
+    font-weight: 500;
 }

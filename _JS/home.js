@@ -1,28 +1,31 @@
 "use strict";
-const CSSSetup = () => {
+const ResizeGrid = () => {
     //Add grid columns to the Activity Grid
     const activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
     const gridColumns = Math.floor(window.innerWidth / activityWidth);
-    const repeatProperty = `repeat(${gridColumns}, ${activityWidth}px);`;
+    const repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`;
     document.getElementById("activityGrid").style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 };
+const ACTIVITY_COLOUR = "#123456";
 const ACTIVITIES = [
-    { type: "addition", title: "Addition", image: "Addition", imageColour: "#123456", imageHeight: "70%" },
-    { type: "subtraction", title: "Subtraction", image: "Subtraction", imageColour: "#123456", imageHeight: "20%" },
-    { type: "multiplication", title: "Multiplication", image: "Multiplication", imageColour: "#123456", imageHeight: "70%" },
-    { type: "division", title: "Division", image: "Division", imageColour: "#123456", imageHeight: "70%" },
-    { type: "algebra", title: "Algebra", image: "Algebra", imageColour: "#123456", imageHeight: "70%" }
+    { type: "addition", title: "Addition", image: "Addition", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
+    { type: "subtraction", title: "Subtraction", image: "Subtraction", imageColour: ACTIVITY_COLOUR, imageHeight: "20%" },
+    { type: "multiplication", title: "Multiplication", image: "Multiplication", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
+    { type: "division", title: "Division", image: "Division", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
+    { type: "algebra", title: "Algebra", image: "Algebra", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
 ];
 const LoadActivities = () => {
     const activityGrid = document.getElementById("activityGrid");
     activityGrid.innerHTML = "";
     for (const activity of ACTIVITIES) {
-        const element = document.createElement("activity");
+        const element = document.createElement("div");
+        element.id = activity.type;
+        element.className = "activity";
         element.dataset["type"] = activity.type;
         element.innerHTML =
             `
             <div>
-                <h2>${activity.title}</h2>
+                <h2 class="activityTitle">${activity.title}</h2>
             </div>
             <div style='height: 100%; width: 100%; display: flex; align-items: center; justify-content: center;'>
                 <img data-src="${activity.image}" data-colour="${activity.imageColour}" data-height="${activity.imageHeight}">
@@ -83,20 +86,39 @@ const LoadSVGs = () => {
         });
     }
 };
-const InitListeners = () => {
-    const elements = document.getElementsByTagName("activity");
-    for (const element of elements) {
-        const type = element.dataset["type"];
-        element.onclick = () => {
-            const url = `/Src/multiplayer?type=${type}`;
-            console.log("Go to: " + url);
+const LoadListeners = () => {
+    for (const activity of ACTIVITIES) {
+        const type = activity.type;
+        document.getElementById(type).onclick = () => {
+            OpenPopup(activity);
         };
     }
+    document.getElementById("popupBackground").onclick = () => {
+        ClosePopup();
+    };
 };
-const main = () => {
-    CSSSetup();
+const OpenPopup = (activity) => {
+    document.getElementById("popup").style.bottom = "0";
+    document.getElementById("popupTitle").innerText = activity.title;
+    document.getElementById("tutorial").onclick = () => {
+        console.log("Go to tutorial for: " + activity.type);
+    };
+    document.getElementById("singlePlayer").onclick = () => {
+        console.log("Go to single player for: " + activity.type);
+    };
+    document.getElementById("multiplayer").onclick = () => {
+        console.log("Go to multiplayer for: " + activity.type);
+    };
+};
+const ClosePopup = () => {
+    document.getElementById("popup").style.bottom = "-100vh";
+};
+const MAIN = () => {
+    ResizeGrid();
+    document.body.onresize = () => { ResizeGrid(); };
     LoadActivities();
     LoadSVGs();
-    InitListeners();
+    LoadListeners();
+    OpenPopup(ACTIVITIES[0]);
 };
-main();
+MAIN();
