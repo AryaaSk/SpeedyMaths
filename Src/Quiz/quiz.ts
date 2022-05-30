@@ -4,7 +4,7 @@ const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
 
 let WRONGLY_ANSWERED: any = 0;
 
-const Init = () => {
+const InitQuiz = () => {
     WRONGLY_ANSWERED = 0;
 
     //@ts-expect-error
@@ -140,7 +140,7 @@ const FinishQuiz = (timeTaken: number) => {
 }
 
 const MAIN_QUIZ = async () => {
-    Init();
+    InitQuiz();
     const startTime = Date.now();
     const questions = CreateQuestions();
     const timerInterval = await UpdateTimerLoop(startTime) //returns a reference to the setInterval(), so we can clear it later

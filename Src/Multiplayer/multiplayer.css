@@ -1,0 +1,108 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+
+    --themeColour: #123456;
+    color: var(--themeColour);
+}
+
+#wrapper {
+    height: 100%;
+    width: 100%;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 60px auto;
+}
+
+header {
+    padding: 10px;
+
+    display: grid;
+    grid-template-columns: min-content auto max-content;
+    place-items: center;
+
+    color: var(--themeColour);
+    background-color: rgb(245, 245, 245);
+    border-bottom: 1px solid grey;
+}
+#username {
+    font-size: 2rem;
+}
+#changeUsername {
+    height: 40px; 
+    max-height: 90%;
+    width: 250px;
+    max-width: 90%;
+
+    background-color: rgb(225, 225, 225);
+    border: none;
+    border-radius: 5px;
+    font-size: 1.4rem;
+
+    transition: 100ms;
+}
+#changeUsername:active {
+    background-color: rgb(190, 190, 190);
+}
+
+
+main {
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 50% 50%;
+    place-items: center;
+}
+#createParty {
+    height: 100px;
+    width: 90%;
+    padding: 0;
+
+    background-color: var(--themeColour);
+    border: none;
+    border-radius: 20px;
+
+    color: white;
+    font-size: 2.5rem;
+    font-weight: 500;
+}
+#currentPartyCode {
+    font-size: 2rem;
+    font-weight: 600;
+}
+
+#enterCode {
+    height: 150px;
+    width: 90%;
+    padding: 10px;
+    padding-top: 25px;
+
+    /*To stop padding from affecting size*/
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
+
+    background-color: var(--themeColour);
+    border: none;
+    border-radius: 20px;
+
+    color: white;
+    font-size: 1.5rem;
+    font-weight: 500;
+
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: max-content auto;
+    place-items: center;
+}
+#enterCodeLabel {
+    font-size: x-large;
+}
+#enterCodeInput {
+    height: 40px;
+    width: 90%;
+
+    border-radius: 10px;
+    font-size: large;
+}

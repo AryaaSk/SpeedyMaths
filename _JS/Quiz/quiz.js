@@ -12,7 +12,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 const QUIZ_LENGTH = 2;
 const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
 let WRONGLY_ANSWERED = 0;
-const Init = () => {
+const InitQuiz = () => {
     WRONGLY_ANSWERED = 0;
     //@ts-expect-error
     const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
@@ -126,7 +126,7 @@ const FinishQuiz = (timeTaken) => {
     };
 };
 const MAIN_QUIZ = () => __awaiter(void 0, void 0, void 0, function* () {
-    Init();
+    InitQuiz();
     const startTime = Date.now();
     const questions = CreateQuestions();
     const timerInterval = yield UpdateTimerLoop(startTime); //returns a reference to the setInterval(), so we can clear it later

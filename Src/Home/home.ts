@@ -130,7 +130,8 @@ const OpenPopup = (activity: Activity) => {
         location.href = url;
     }
     document.getElementById("multiplayer")!.onclick = () => {
-        console.log("Go to multiplayer for: " + activity.type);
+        const url = `/Src/Multiplayer/multiplayer.html?type=${activity.type}&&title=${activity.title}`;
+        location.href = url;
     }
 }
 const ClosePopup = () => {
