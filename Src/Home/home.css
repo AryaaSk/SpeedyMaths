@@ -16,13 +16,14 @@ body {
 
     display: grid;
     grid-template-columns: repeat(1, var(--activityWidth)); /*Grid columns are calculated in JS, HOWEVER THIS SPECIFIC PROPERTY DOES NOT SEEM TO GET UPDATED*/
+    grid-auto-rows: 300px;
     gap: 50px;
     
     place-items: center;
     margin: 0 auto;
 }
 .activity {
-    height: 300px;
+    height: 100%;
     width: 80%;
 
     background-color: rgb(225, 225, 225);
@@ -30,7 +31,8 @@ body {
 
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: max-content auto 20px;
+    /*grid-template-rows: max-content auto 20px;*/
+    grid-template-rows: 20% calc(100% - 20% - 20px) 20px;
     
     transition: 100ms;
 }
