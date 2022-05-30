@@ -1,0 +1,55 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Multiplayer Lobby</title>
+
+    <!-- Firebase -->
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.9.1/firebase-database.js"></script>
+
+    <script src="/_JS/Multiplayer/firebase.js"></script>
+    <script src="/_JS/Multiplayer/multiplayer.js" defer></script>
+    <link rel="stylesheet" href="multiplayer.css">
+</head>
+<body>
+    <div id="wrapper">
+        <header>
+            <input class="headerButton" id="goBack" type="button" value="←">
+            <input class="headerButton" id="username" type="button" value="Username">
+        </header>
+
+        <main>
+
+            <h1 id="title" style="text-decoration: underline;">Title</h1>
+
+            <div id="currentPartyContainer">
+                <!-- Shows a code if the user is currently inside a party, otherwise shows the create party button -->
+                <input type="button" class="multiplayerButton" id="createParty" value="Create Party">
+                <label id="currentPartyCode"></label>
+
+                <br>
+                <input type="button" class="multiplayerButton" id="leaveParty" value="Leave Party">
+            </div>
+
+            <div id="enterCode">
+                <input type="button" id="joinParty" value="Join Party">
+                <input type="tel" id="enterCodeInput" placeholder="Party Code">
+            </div>
+
+            <div id="gameControl">
+                <!-- List of players currently in the game -->
+                <ul id="playerList">
+                    <li>Player1</li>
+                    <li>Player2</li>
+                    <li>Player3</li>
+                </ul>
+
+                <input type="button" class="multiplayerButton" id="startGame" value="Start Game">
+            </div>
+
+        </main>
+    </div>
+</body>
+</html>
