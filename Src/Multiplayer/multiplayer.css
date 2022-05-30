@@ -8,8 +8,8 @@ body {
 }
 
 #wrapper {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
 
     display: grid;
     grid-template-columns: 100%;
@@ -54,12 +54,16 @@ main {
     grid-template-rows: 50% 50%;
     place-items: center;
 }
-#createParty {
+#currentParty {
+    height: max-content;
+    width: 100%;
+}
+
+.partyButton {
     height: 100px;
     width: 90%;
     padding: 0;
 
-    background-color: var(--themeColour);
     border: none;
     border-radius: 20px;
 
@@ -67,16 +71,28 @@ main {
     font-size: 2.5rem;
     font-weight: 500;
 }
+#createParty {
+    background-color: var(--themeColour);
+}
+#leaveParty {
+    width: 50%;
+    margin: 0 auto;
+
+    background-color: #ff6060;
+    display: none;
+}
 #currentPartyCode {
     font-size: 2rem;
     font-weight: 600;
+
+    display: none;
 }
 
 #enterCode {
     height: 150px;
     width: 90%;
     padding: 10px;
-    padding-top: 25px;
+    padding-top: 15px;
 
     /*To stop padding from affecting size*/
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -96,12 +112,23 @@ main {
     grid-template-rows: max-content auto;
     place-items: center;
 }
-#enterCodeLabel {
-    font-size: x-large;
+#joinParty {
+    height: auto;
+    width: 100%;
+    margin: 0;
+
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+
+    border: none;
+    background-color: transparent;
 }
 #enterCodeInput {
     height: 40px;
     width: 90%;
+    padding-left: 10px;
+    padding-right: 10px;
 
     border-radius: 10px;
     font-size: large;

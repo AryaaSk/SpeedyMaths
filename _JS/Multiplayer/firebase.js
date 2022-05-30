@@ -8,8 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-let USER_ID;
-let USERNAME;
 //Firebase
 const firebaseConfig = {
     apiKey: "AIzaSyC8oxUMbZuyO98AoWTNE_7GYgRVXL_iIk8",
@@ -23,8 +21,25 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const DATABASE = firebase.database();
 const FirebaseWrite = (path, data) => {
-    const ref = firebase.database().ref(path);
-    ref.set(data);
+    const promise = new Promise((resolve) => {
+        const ref = firebase.database().ref(path);
+        ref.set(data).then(() => { resolve("Added data"); });
+    });
+    return promise;
+};
+const FirebasePush = (path, data) => {
+    const promise = new Promise((resolve) => {
+        const ref = firebase.database().ref(path);
+        ref.push(data).then(() => { resolve("Appened data"); });
+    });
+    return promise;
+};
+const FirebaseRemove = (path) => {
+    const promise = new Promise((resolve) => {
+        const ref = firebase.database().ref(path);
+        ref.remove().then(() => { resolve("Removed data"); });
+    });
+    return promise;
 };
 const FirebaseRead = (path) => __awaiter(void 0, void 0, void 0, function* () {
     const promise = new Promise((resolve) => {
@@ -36,22 +51,10 @@ const FirebaseRead = (path) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return promise;
 });
-//User Managment
-const GetUser = () => {
-    //check local storage for a user id, if there isnt one then we create one, there should also be a username stored in local storage
-    const userID = localStorage.getItem("userID");
-    const username = localStorage.getItem("username");
-    if (userID == undefined) {
-        const generatedUserID = String(Math.floor(Math.random() * (9999999999999999 - 1000000000000000 + 1) + 1000000000000000));
-        localStorage.setItem("userID", generatedUserID);
-        localStorage.setItem("username", "SpeedyMathsPlayer");
-        return [generatedUserID, "SpeedyMathsPlayer"];
-    }
-    else {
-        return [userID, username];
-    }
+const FirebaseListener = (path, callback) => {
+    const ref = firebase.database().ref(path);
+    ref.on('value', (snapshot) => {
+        const data = snapshot.val();
+        callback(data);
+    });
 };
-const MAIN_FIREBASE = () => __awaiter(void 0, void 0, void 0, function* () {
-    [USER_ID, USERNAME] = GetUser();
-});
-MAIN_FIREBASE();

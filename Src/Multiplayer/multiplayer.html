@@ -24,13 +24,16 @@
         <main>
             <div id="currentParty">
                 <!-- Shows a code if the user is currently inside a party, otherwise shows the create party button -->
-                <input type="button" id="createParty" value="Create Party">
-                <label id="currentPartyCode">Current Party: 123456</label>
+                <input type="button" class="partyButton" id="createParty" value="Create Party">
+                <label id="currentPartyCode"></label>
+
+                <br> <br>
+                <input type="button" class="partyButton" id="leaveParty" value="Leave Party">
             </div>
 
             <div id="enterCode">
-                <label id="enterCodeLabel">Enter Code: </label>
-                <input type="tel" id="enterCodeInput">
+                <input type="button" id="joinParty" value="Join Party">
+                <input type="tel" id="enterCodeInput" placeholder="Party Code">
             </div>
         </main>
     </div>

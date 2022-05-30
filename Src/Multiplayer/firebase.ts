@@ -1,6 +1,4 @@
 declare const firebase: any;
-let USER_ID: string;
-let USERNAME: string;
 
 //Firebase
 const firebaseConfig = {
@@ -17,9 +15,29 @@ const DATABASE = firebase.database();
 
 
 const FirebaseWrite = (path: string, data: any) => {
-    const ref = firebase.database().ref(path);
-    ref.set(data);
+    const promise = new Promise((resolve) => {
+        const ref = firebase.database().ref(path);
+        ref.set(data).then(() => { resolve("Added data"); });
+    })
+    return promise;
 };
+
+const FirebasePush = (path: string, data: any) => { //DOESN'T WORK PROPERLY, IT KEEPS ADDING SOME RANDOM CHARACTERS
+    const promise = new Promise((resolve) => {
+        const ref = firebase.database().ref(path);
+        ref.push(data).then(() => { resolve("Appened data"); });
+    })
+    return promise;
+};
+
+const FirebaseRemove = (path: string) => {
+    const promise = new Promise((resolve) => {
+        const ref = firebase.database().ref(path);
+        ref.remove().then(() => { resolve("Removed data"); })
+    })
+    return promise;
+};
+
 const FirebaseRead = async (path: string) => {
     const promise = new Promise((resolve) => {
         const ref = firebase.database().ref(path);
@@ -31,28 +49,10 @@ const FirebaseRead = async (path: string) => {
     return promise;
 };
 
-
-
-//User Managment
-const GetUser = (): string[] => {
-    //check local storage for a user id, if there isnt one then we create one, there should also be a username stored in local storage
-    const userID = localStorage.getItem("userID");
-    const username = localStorage.getItem("username");
-    if (userID == undefined) {
-        const generatedUserID = String(Math.floor(Math.random() * (9999999999999999 - 1000000000000000 + 1) + 1000000000000000));
-        localStorage.setItem("userID", generatedUserID);
-        localStorage.setItem("username", "SpeedyMathsPlayer");
-        return [generatedUserID, "SpeedyMathsPlayer"];
-    }
-    else {
-        return [userID, username!];
-    }
-}
-
-
-
-const MAIN_FIREBASE = async () => {
-    [USER_ID, USERNAME] = GetUser();
-}
-
-MAIN_FIREBASE();
+const FirebaseListener = (path: string, callback: (data: any) => void) => {
+    const ref = firebase.database().ref(path);
+    ref.on('value', (snapshot: any) => {
+        const data = snapshot.val();
+        callback(data);
+    });
+};
