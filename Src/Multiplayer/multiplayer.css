@@ -29,6 +29,7 @@ input[type="button"] {
     height: 100px;
     width: 350px;
     padding: 20px;
+    margin: 0 auto;
 
     /*To stop padding from affecting size*/
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
@@ -51,7 +52,7 @@ header {
     padding: 10px;
 
     display: grid;
-    grid-template-columns: min-content auto;
+    grid-template-columns: min-content min-content auto;
     place-items: center;
 
     color: var(--themeColour);
@@ -113,21 +114,25 @@ main {
 
 
 /* BUTTONS */
-#username {
+.headerButton {
     height: 40px; 
     max-height: 90%;
     width: max-content;
     text-align: center;
 
-    font-size: 1.4rem;
+    font-size: 1.4rem !important;
     background-color: rgb(225, 225, 225);
     border: none;
     border-radius: 5px;
 
     transition: 100ms;
 }
-#username:active {
+.headerButton:active {
     background-color: rgb(190, 190, 190);
+}
+
+#goBack {
+    margin-right: 20px;
 }
 
 #createParty {
@@ -145,8 +150,6 @@ main {
 }
 
 #leaveParty {
-    margin: 0 auto;
-
     background-color: #ff0000;
     display: none;
 }
@@ -172,6 +175,7 @@ main {
 
     border-radius: 10px;
 }
+
 #currentPartyCode {
     display: none;
     font-size: var(--buttonFontSize);

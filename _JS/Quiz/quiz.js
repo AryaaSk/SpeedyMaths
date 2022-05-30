@@ -122,6 +122,10 @@ const FinishQuiz = (timeTaken) => {
             location.href = "/Src/Home/home.html";
         }
         else if (gameType == "multiplayer") {
+            const urlParams = new URLSearchParams(window.location.search);
+            const type = urlParams.get('type');
+            const title = urlParams.get('title');
+            location.href = `/Src/Multiplayer/multiplayer.html?type=${type}&&title=${title}&&time=${timeTaken}`;
         }
     };
 };
