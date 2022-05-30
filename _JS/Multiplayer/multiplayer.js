@@ -37,6 +37,15 @@ const InitHTML = () => {
 };
 const InitListeners = () => {
     document.getElementById("goBack").onclick = () => {
+        const url = "/Src/Home/home.html";
+        location.href = url;
+    };
+    document.getElementById("username").onclick = () => {
+        const newUsername = prompt("Enter a new username");
+        if (newUsername == undefined || newUsername == "") {
+            return;
+        }
+        ChangeUsername(newUsername);
     };
     document.getElementById("createParty").onclick = () => {
         CreateParty();
@@ -82,6 +91,12 @@ const GetUser = () => {
         const username = localStorage.getItem("username");
         return [userID, username];
     }
+};
+const ChangeUsername = (username) => {
+    USERNAME = username;
+    localStorage.setItem("username", username);
+    FirebaseWrite("Players/" + USER_ID + "/username", username);
+    document.getElementById("username").value = USERNAME;
 };
 const SyncFirebase = () => __awaiter(void 0, void 0, void 0, function* () {
     //Check if the user already has a node in the Players list in firebase, if not then create one

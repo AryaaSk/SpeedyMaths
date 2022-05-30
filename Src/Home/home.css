@@ -7,6 +7,7 @@ body {
 
     --activityWidth: 350px;
     --fontColour: #123456;
+    color: var(--fontColour);
 }
 
 #activityGrid {

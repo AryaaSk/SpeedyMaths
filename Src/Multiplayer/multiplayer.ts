@@ -37,7 +37,15 @@ const InitHTML = () => {
 }
 const InitListeners = () => {
     document.getElementById("goBack")!.onclick = () => {
-
+        const url = "/Src/Home/home.html";
+        location.href = url;
+    }
+    document.getElementById("username")!.onclick = () => {
+        const newUsername = prompt("Enter a new username");
+        if (newUsername == undefined || newUsername == "") {
+            return
+        }
+        ChangeUsername(newUsername);
     }
     document.getElementById("createParty")!.onclick = () => {
         CreateParty();
@@ -91,7 +99,12 @@ const GetUser = (): string[] => {
         return [userID, username!];
     }
 }
-
+const ChangeUsername = (username: string) => {
+    USERNAME = username;
+    localStorage.setItem("username", username);
+    FirebaseWrite("Players/" + USER_ID + "/username", username);
+    (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
+}
 const SyncFirebase = async () => {
     //Check if the user already has a node in the Players list in firebase, if not then create one
     const playerNode = await FirebaseRead("Players/" + USER_ID);
@@ -208,7 +221,7 @@ const UpdatePartyPlayers = async (data: any) => {
 }
 const GameStartedCallback = (data: boolean) => {
     if (data != true) { return; }
-    
+
     //Once you are past this point, then we know that the game has been started so the player must be transported to the quiz, and then we will see them again when they get sent back from the quiz
     TransportPlayer();
 }
