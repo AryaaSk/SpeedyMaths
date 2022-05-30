@@ -37,18 +37,17 @@ const SyncFirebase = async () => {
 const PartyCodeCallback = (data: number) => {
     if (data != PARTY_CODE) {
         location.reload(); //So now whenever the user is placed into a party, the page will reload and we don't always have to worry about the user switching parties
-    }
+    }``
 }
 
 
 const InitHTML = () => {
-    document.getElementById("username")!.innerText = USERNAME;
+    (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
 
-    //@ts-expect-error
-    const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
-    //@ts-expect-error
-    const title = params.title;
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title')!;
     document.getElementById("title")!.innerText = title;
+
     if (PARTY_CODE == -1) { //user is not inside a party
         document.getElementById("currentPartyCode")!.style.display = "none";
     }
@@ -59,8 +58,11 @@ const InitHTML = () => {
         document.getElementById("currentPartyCode")!.style.display = "block";
         document.getElementById("leaveParty")!.style.display = "block";
         document.getElementById("currentPartyCode")!.innerText = "Current Party Code: " + String(PARTY_CODE);
+
+        document.getElementById("gameControl")!.style.display = "block";
     }
 }
+
 
 const CreateParty = async () => {
     const range = [100000, 999999]; //random 6 digit number
@@ -70,14 +72,20 @@ const CreateParty = async () => {
     const playerTime: { [k: string] : any } = {};
     playerTime[USER_ID] = 0;
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('type');
+
     await FirebaseWrite("Parties/" + code, {
         gameStarted: false,
+        gameType: gameType,
         playerTimes: playerTime
     });
     FirebaseWrite("Players/" + USER_ID + "/currentPartyCode", code);
 }
 
 const JoinParty = async (code: number) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('type');
     const party = await FirebaseRead("Parties/" + code);
 
     if (party == undefined) { //check if party exists
@@ -85,7 +93,11 @@ const JoinParty = async (code: number) => {
         return;
     }
     else if ((<any>party).gameStarted == true) {
-        alert("Unable to join: Game has already started");
+        alert("Unale to join: Game has already started");
+        return;
+    }
+    else if ((<any>party).gameType != gameType) {
+        alert("Unable to join: Party is for game type of: " + (<any>party).gameType);
         return;
     }
 

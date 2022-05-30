@@ -44,13 +44,12 @@ const PartyCodeCallback = (data) => {
     if (data != PARTY_CODE) {
         location.reload(); //So now whenever the user is placed into a party, the page will reload and we don't always have to worry about the user switching parties
     }
+    ``;
 };
 const InitHTML = () => {
-    document.getElementById("username").innerText = USERNAME;
-    //@ts-expect-error
-    const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
-    //@ts-expect-error
-    const title = params.title;
+    document.getElementById("username").value = USERNAME;
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title');
     document.getElementById("title").innerText = title;
     if (PARTY_CODE == -1) { //user is not inside a party
         document.getElementById("currentPartyCode").style.display = "none";
@@ -61,6 +60,7 @@ const InitHTML = () => {
         document.getElementById("currentPartyCode").style.display = "block";
         document.getElementById("leaveParty").style.display = "block";
         document.getElementById("currentPartyCode").innerText = "Current Party Code: " + String(PARTY_CODE);
+        document.getElementById("gameControl").style.display = "block";
     }
 };
 const CreateParty = () => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,20 +69,29 @@ const CreateParty = () => __awaiter(void 0, void 0, void 0, function* () {
     const code = range[0] + offset;
     const playerTime = {};
     playerTime[USER_ID] = 0;
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('type');
     yield FirebaseWrite("Parties/" + code, {
         gameStarted: false,
+        gameType: gameType,
         playerTimes: playerTime
     });
     FirebaseWrite("Players/" + USER_ID + "/currentPartyCode", code);
 });
 const JoinParty = (code) => __awaiter(void 0, void 0, void 0, function* () {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('type');
     const party = yield FirebaseRead("Parties/" + code);
     if (party == undefined) { //check if party exists
         alert("Invalid Party Code");
         return;
     }
     else if (party.gameStarted == true) {
-        alert("Unable to join: Game has already started");
+        alert("Unale to join: Game has already started");
+        return;
+    }
+    else if (party.gameType != gameType) {
+        alert("Unable to join: Party is for game type of: " + party.gameType);
         return;
     }
     //Add the USER_ID to the playerTimes list
