@@ -31,23 +31,7 @@ const CreateQuestions = () => {
 
     const questions: Question[] = [];
     for (let i = 0; i != QUIZ_LENGTH; i += 1) {
-        let question;
-        switch (quizType) {
-            case "addition":
-                question = ADDITION_QUESTION();
-                break;
-            case "subtraction":
-                question = SUBTRACTION_QUESTION();
-                break;
-            case "multiplication":
-                question = MULTIPLICATION_QUESTION();
-                break;
-            case "division":
-                question = DIVISION_QUESTION();
-                break;
-            default:
-                continue;
-        }
+        const question = QUESTIONS[quizType]();
         questions.push(question);
     }
     return questions;

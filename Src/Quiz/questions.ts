@@ -40,25 +40,35 @@ const PackageQuestion = (question: string, answer: number): Question => { //pack
     return { question: question, answer: answer, options: possibleOptions}
 }
 
-const ADDITION_QUESTION = () => {
+
+
+
+
+
+const QUESTIONS: { [k: string] : () => Question } = {}; //Dictionary, keys are the type of question, and value is a function which returns the question
+
+QUESTIONS["addition"] = () => {
     const [num1, num2] = GenerateRandomNumbers([0, 100], 2);
     const question = `${num1} + ${num2}`;
     const answer = num1 + num2;
     return PackageQuestion(question, answer);
 }
-const SUBTRACTION_QUESTION = () => {
+
+QUESTIONS["subtraction"] = () => {
     const [num1, num2] = GenerateRandomNumbers([0, 100], 2);
     const question = `${num1} - ${num2}`;
     const answer = num1 - num2;
     return PackageQuestion(question, answer);
 }
-const MULTIPLICATION_QUESTION = () => {
+
+QUESTIONS["multiplication"] = () => {
     const [num1, num2] = GenerateRandomNumbers([0, 15], 2);
     const question = `${num1} * ${num2}`;
     const answer = num1 * num2;
     return PackageQuestion(question, answer);
 }
-const DIVISION_QUESTION = () => {
+
+QUESTIONS["division"] = () => {
     const [num1, num2] = GenerateRandomNumbers([1, 15], 2);
     const result = num1 * num2;
     const question = `${result} / ${num1}`; //So that we avoid giving the user a decimal number
