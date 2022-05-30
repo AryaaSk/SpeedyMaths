@@ -1,14 +1,26 @@
 //Generating Question Callbacks
-const QUIZ_LENGTH = 10;
+const QUIZ_LENGTH = 2;
 const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
 
-const InitHTML = () => {
+let WRONGLY_ANSWERED: any = 0;
+
+const Init = () => {
+    WRONGLY_ANSWERED = 0;
+
     //@ts-expect-error
     const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
     //@ts-expect-error
     const quizTitle = params.title;
 
     document.getElementById("title")!.innerText = quizTitle;
+
+    document.getElementById("option1")!.style.display = "grid";
+    document.getElementById("option2")!.style.display = "grid";
+    document.getElementById("option3")!.style.display = "grid";
+    document.getElementById("option4")!.style.display = "grid";
+
+    document.getElementById("timeTaken")!.style.display = "none";
+    document.getElementById("doneButton")!.style.display = "none";
 }
 
 const CreateQuestions = () => {
@@ -32,6 +44,7 @@ const CreateQuestions = () => {
                 break;
             case "division":
                 question = DIVISION_QUESTION();
+                break;
             default:
                 continue;
         }
@@ -41,7 +54,6 @@ const CreateQuestions = () => {
 }
 
 const DoQuestion = (question: Question) => {
-    let wrong = 0;
     const promise = new Promise((resolve) => {
         document.getElementById("question")!.innerText = question.question;
         document.getElementById("option1")!.innerText = String(question.options[0]);
@@ -49,10 +61,10 @@ const DoQuestion = (question: Question) => {
         document.getElementById("option3")!.innerText = String(question.options[2]);
         document.getElementById("option4")!.innerText = String(question.options[3]);
 
-        document.getElementById("option1")!.style.color = "var(--fontColour)";
-        document.getElementById("option2")!.style.color = "var(--fontColour)";
-        document.getElementById("option3")!.style.color = "var(--fontColour)";
-        document.getElementById("option4")!.style.color = "var(--fontColour)";
+        document.getElementById("option1")!.style.backgroundColor = "";
+        document.getElementById("option2")!.style.backgroundColor = "";
+        document.getElementById("option2")!.style.backgroundColor = "";
+        document.getElementById("option3")!.style.backgroundColor = "";
 
         document.getElementById("option1")!.onclick = () => { clickedAnswer(0); }
         document.getElementById("option2")!.onclick = () => { clickedAnswer(1); }
@@ -61,13 +73,13 @@ const DoQuestion = (question: Question) => {
 
         const clickedAnswer = (index: number) => { //resolves true if the answer was correct, false is the answer was wrong
             if (question.options[index] == question.answer) {
-                resolve(wrong);
+                resolve(true);
             }
             else {
                 //choice was not correct, so don't move on and highlight option red
-                document.getElementById("option" + (index + 1))!.style.color = "red";
-                setTimeout(() => { document.getElementById("option" + (index + 1))!.style.color = "var(--fontColour)"; }, 2000);
-                wrong += 1;
+                document.getElementById("option" + (index + 1))!.style.backgroundColor = "#ff6161";
+                setTimeout(() => { document.getElementById("option" + (index + 1))!.style.backgroundColor = ""; }, 2000);
+                WRONGLY_ANSWERED += 1;
             }
         }
     });
@@ -75,25 +87,69 @@ const DoQuestion = (question: Question) => {
 }
 
 const DoQuiz = async (questions: Question[]) => {
-    let totalWrong: any = 0;
     for (const question of questions) {
-        const wrong = await DoQuestion(question);
-        totalWrong += wrong;
+        await DoQuestion(question);
     }
-    return totalWrong;
 }
 
+const UpdateTimerLoop = async (startTime: number) => {
+    const timer = document.getElementById("timer")!;
+    const interval = setInterval(() => {
+        const currentDate = Date.now();
+        const timeTaken = ((currentDate - startTime) + (WRONGLY_ANSWERED * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
+
+        const timeTakenStringSplit = String(timeTaken).split("."); //we always want there to be 3 decimal points to not confuse the user
+
+        let values = timeTakenStringSplit[0];
+        let decimals = timeTakenStringSplit[1];
+        while (decimals.length < 3) {
+            decimals = decimals + "0";
+        }
+
+        timer.innerText = `${values}.${decimals}s`;
+    }, 16);
+    return interval;
+}
+
+const FinishQuiz = (timeTaken: number) => {
+    document.getElementById("question")!.innerText = "Completed";
+    document.getElementById("option1")!.style.display = "none";
+    document.getElementById("option2")!.style.display = "none";
+    document.getElementById("option3")!.style.display = "none";
+    document.getElementById("option4")!.style.display = "none";
+
+    document.getElementById("timer")!.style.display = "none";
+    document.getElementById("timeTaken")!.style.display = "grid"; //since I use that to center the text
+    document.getElementById("doneButton")!.style.display = "block";
+
+    document.getElementById("timeTaken")!.innerText = `Time: ${timeTaken}s`;
+
+    document.getElementById("doneButton")!.onclick = () => {
+        //@ts-expect-error
+        const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
+        //@ts-expect-error
+        const gameType = params.gameType;
+
+        if (gameType == "singlePlayer") {
+            location.href = "/Src/Home/home.html"
+        }
+        else if (gameType == "multiplayer") {
+
+        }
+    }
+}
 
 const MAIN_QUIZ = async () => {
-    InitHTML();
+    Init();
     const startTime = Date.now();
     const questions = CreateQuestions();
-    const totalWronglyAnswered = await DoQuiz(questions);
+    const timerInterval = await UpdateTimerLoop(startTime) //returns a reference to the setInterval(), so we can clear it later
+    await DoQuiz(questions);
     const endTime = Date.now();
 
-    const timeTaken = ((endTime - startTime) + (totalWronglyAnswered * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
-    console.log(timeTaken);
-    //show done button which takes user back to their previous screen
+    clearInterval(timerInterval);
+    const timeTaken = ((endTime - startTime) + (WRONGLY_ANSWERED * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
+    FinishQuiz(timeTaken);
 }
 
 MAIN_QUIZ();

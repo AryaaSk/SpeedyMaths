@@ -12,16 +12,23 @@
 <body>
     <div id="wrapper">
 
-        <h1 id="title" style="transform: translateX(3.5px); margin-bottom: 0px; text-decoration: underline;">Title</h1>
+        <div>
+            <h1 id="title" style="transform: translateX(3.5px); margin-bottom: 0px; text-decoration: underline;">Title</h1>
+            <h2 id="timer" style="margin: 5px;">Timer</h2>
+        </div>
 
-        <div> <h2 id="question">Question</h2> </div>
+        <div> <h1 id="question" style="font-size: 3rem; margin: 21px;;">Question</h1> </div>
     
         <div id="questionGrid">
             <div id="option1" class="option" style="border-top-left-radius: var(--optionBorderRadius);"></div>
             <div id="option2" class="option" style="border-top-right-radius: var(--optionBorderRadius);"></div>
             <div id="option3" class="option" style="border-bottom-left-radius: var(--optionBorderRadius);"></div>
             <div id="option4" class="option" style="border-bottom-right-radius: var(--optionBorderRadius);"></div>
+
+            <div id="timeTaken"></div>
         </div>
+
+        <input type="button" id="doneButton" value="Done">
 
     </div>
 </body>
