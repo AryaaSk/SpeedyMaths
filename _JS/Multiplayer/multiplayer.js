@@ -47,6 +47,11 @@ const PartyCodeCallback = (data) => {
 };
 const InitHTML = () => {
     document.getElementById("username").innerText = USERNAME;
+    //@ts-expect-error
+    const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
+    //@ts-expect-error
+    const title = params.title;
+    document.getElementById("title").innerText = title;
     if (PARTY_CODE == -1) { //user is not inside a party
         document.getElementById("currentPartyCode").style.display = "none";
     }

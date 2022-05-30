@@ -51,7 +51,7 @@ header {
 main {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 10% 45% 45%;
     place-items: center;
 }
 #currentParty {
