@@ -49,7 +49,7 @@ const FirebaseRead = async (path: string) => {
     return promise;
 };
 
-const FirebaseListener = (path: string, callback: (data: any) => void) => {
+const FirebaseListen = (path: string, callback: (data: any) => void) => {
     const ref = firebase.database().ref(path);
     ref.on('value', (snapshot: any) => {
         const data = snapshot.val();

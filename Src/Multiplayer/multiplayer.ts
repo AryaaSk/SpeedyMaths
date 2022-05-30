@@ -2,45 +2,11 @@ let USER_ID: string;
 let USERNAME: string;
 let PARTY_CODE: number;
 
-const GetUser = (): string[] => {
-    //check local storage for a user id, if there isnt one then we create one, there should also be a username stored in local storage
-    const userID = localStorage.getItem("userID");
-    if (userID == undefined) {
-        const generatedUserID = String(Math.floor(Math.random() * (9999999999999999 - 1000000000000000 + 1) + 1000000000000000));
-        const username = "SpeedyMathsPlayer";
-        localStorage.setItem("userID", generatedUserID);
-        localStorage.setItem("username", username);
-        return [generatedUserID, username];
-    }
-    else {
-        const username = localStorage.getItem("username");
-        return [userID, username!];
-    }
-}
-
-const SyncFirebase = async () => {
-    //Check if the user already has a node in the Players list in firebase, if not then create one
-    const currentPartyCode = await FirebaseRead("Players/" + USER_ID + "/currentPartyCode");
-    PARTY_CODE = (<number>currentPartyCode);
-
-    if (currentPartyCode == undefined) {
-        FirebaseWrite("Players/" + USER_ID, {
-            currentPartyCode: -1
-        })
-    }
-
-    const party = await FirebaseRead("Parties/" + PARTY_CODE);
-    if (party == undefined || (<any>party).gameStarted == true) {
-        FirebaseWrite("Players/" + USER_ID, { currentPartyCode: -1 })
-    }
-}
-const PartyCodeCallback = (data: number) => {
-    if (data != PARTY_CODE) {
-        location.reload(); //So now whenever the user is placed into a party, the page will reload and we don't always have to worry about the user switching parties
-    }``
-}
 
 
+
+
+//DOM MANIPULTION
 const InitHTML = () => {
     (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
 
@@ -62,8 +28,72 @@ const InitHTML = () => {
         document.getElementById("gameControl")!.style.display = "block";
     }
 }
+const InitListeners = () => {
+    document.getElementById("createParty")!.onclick = () => {
+        CreateParty();
+    }
+    document.getElementById("joinParty")!.onclick = () => {
+        const code = Number((<HTMLInputElement>document.getElementById("enterCodeInput")!).value);
+        JoinParty(code);
+    }
+    document.getElementById("leaveParty")!.onclick = () => {
+        LeaveParty();
+    }
+}
 
 
+
+
+
+//FIREBASE FUNCTIONS
+const GetUser = (): string[] => {
+    //check local storage for a user id, if there isnt one then we create one, there should also be a username stored in local storage
+    const userID = localStorage.getItem("userID");
+    if (userID == undefined) {
+        const generatedUserID = String(Math.floor(Math.random() * (9999999999999999 - 1000000000000000 + 1) + 1000000000000000));
+        const username = "SpeedyMathsPlayer";
+        localStorage.setItem("userID", generatedUserID);
+        localStorage.setItem("username", username);
+        return [generatedUserID, username];
+    }
+    else {
+        const username = localStorage.getItem("username");
+        return [userID, username!];
+    }
+}
+
+const SyncFirebase = async () => {
+    //Check if the user already has a node in the Players list in firebase, if not then create one
+    const playerNode = await FirebaseRead("Players/" + USER_ID);
+    if (playerNode == undefined) {
+        FirebaseWrite("Players/" + USER_ID, {
+            currentPartyCode: -1,
+            username: USERNAME
+        })
+
+        PARTY_CODE = -1;
+    }
+    else {
+        const currentPartyCode = await FirebaseRead("Players/" + USER_ID + "/currentPartyCode");
+        PARTY_CODE = (<number>currentPartyCode);
+    
+        const party = await FirebaseRead("Parties/" + PARTY_CODE);
+        if (party == undefined || (<any>party).gameStarted == true) {
+            FirebaseWrite("Players/" + USER_ID + "/currentPartyCode", -1);
+        }
+    }
+}
+const PartyCodeCallback = (data: number) => {
+    if (data != PARTY_CODE) {
+        location.reload(); //So now whenever the user is placed into a party, the page will reload and we don't always have to worry about the user switching parties
+    }``
+}
+
+
+
+
+
+//MANAGING PARTIES
 const CreateParty = async () => {
     const range = [100000, 999999]; //random 6 digit number
     const offset = Math.round((Math.random() * (range[1] - range[0])));
@@ -114,31 +144,64 @@ const LeaveParty = async () => {
     if (partyPlayers == null) { //party does not have any other players in it
         await FirebaseRemove("Parties/" + PARTY_CODE);
     }
-    FirebaseWrite("Players/" + USER_ID + "/currentPartyCode", -1);
+    FirebaseWrite("Players/" + USER_ID + "/currentPartyCode", -1); //forces a page reload as well, therefore removing the listener
 }
 
-const InitListeners = () => {
-    document.getElementById("createParty")!.onclick = () => {
-        CreateParty();
-    }
-    document.getElementById("joinParty")!.onclick = () => {
-        const code = Number((<HTMLInputElement>document.getElementById("enterCodeInput")!).value);
-        JoinParty(code);
-    }
-    document.getElementById("leaveParty")!.onclick = () => {
-        LeaveParty();
+
+
+
+
+//LOBBY MANAGEMENT
+const UpdatePartyPlayers = async (data: any) => {
+    const playersList = document.getElementById("playerList")!;
+    playersList.innerHTML = "";
+    for (const userID in data) {
+        //Get the player's username from their key
+        const username = await FirebaseRead("Players/" + userID + "/username");
+
+        const listElement = document.createElement("li");
+        listElement.innerText = String(username);
+        playersList.append(listElement);
     }
 }
+const GameStartedCallback = (data: boolean) => {
+    if (data == false) { return; }
+
+    //Once you are past this point, then we know that the game has been started so the player must be transported to the quiz
+    TransportPlayer();
+}
+const TransportPlayer = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('type')!;
+    const gameTitle = urlParams.get('title')!;
+
+    const url = `/Src/Quiz/quiz.html?type=${gameType}&&title=${gameTitle}&&gameType=multiplayer`
+    console.log(url)
+}
+
+
+
+
+
+
+
 
 
 const MAIN_MULTIPLAYER = async () => {
     [USER_ID, USERNAME] = GetUser();
     await SyncFirebase();
-    FirebaseListener("Players/" + USER_ID + "/currentPartyCode", PartyCodeCallback);
+    FirebaseListen("Players/" + USER_ID + "/currentPartyCode", PartyCodeCallback);
 
-    //After this point, PARTY_CODE will remain constant
+    //After this point, PARTY_CODE remains constant, since whenever it changes the page will be refreshed
     InitHTML();
     InitListeners();
+
+    if (PARTY_CODE != -1) {
+        //After joining a party, we need to listen to whenever another player joins, so setup a listener which updates everytime the Parties PlayerTimes is updated
+        FirebaseListen("Parties/" + PARTY_CODE + "/playerTimes", UpdatePartyPlayers);
+
+        FirebaseListen("Parties/" + PARTY_CODE + "/gameStarted", GameStartedCallback); //listen to gameStarted key
+    }
 }
 
 MAIN_MULTIPLAYER();

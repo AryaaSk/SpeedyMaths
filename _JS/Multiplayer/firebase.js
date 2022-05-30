@@ -51,7 +51,7 @@ const FirebaseRead = (path) => __awaiter(void 0, void 0, void 0, function* () {
     });
     return promise;
 });
-const FirebaseListener = (path, callback) => {
+const FirebaseListen = (path, callback) => {
     const ref = firebase.database().ref(path);
     ref.on('value', (snapshot) => {
         const data = snapshot.val();
