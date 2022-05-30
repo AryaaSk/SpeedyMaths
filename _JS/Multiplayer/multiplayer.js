@@ -127,6 +127,9 @@ const PartyCodeCallback = (data) => {
     }
 };
 const UpdateQuizTime = () => {
+    if (PARTY_CODE == -1) {
+        return;
+    }
     FirebaseWrite("Parties/" + PARTY_CODE + "/playerTimes/" + USER_ID, QUIZ_TIME);
 };
 //MANAGING PARTIES
@@ -175,6 +178,9 @@ const LeaveParty = () => __awaiter(void 0, void 0, void 0, function* () {
     FirebaseWrite("Players/" + USER_ID + "/currentPartyCode", -1); //forces a page reload as well, therefore removing the listener
 });
 const StartGame = () => {
+    if (PARTY_CODE == -1) {
+        return;
+    }
     FirebaseWrite("Parties/" + PARTY_CODE + "/gameStarted", true);
 };
 //LOBBY MANAGEMENT

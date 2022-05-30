@@ -2,8 +2,11 @@
 const ResizeGrid = () => {
     //Add grid columns to the Activity Grid
     const activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
-    const gridColumns = Math.floor(window.innerWidth / activityWidth);
-    const repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`;
+    let gridColumns = Math.floor((window.innerWidth - 150) / activityWidth);
+    if (gridColumns > ACTIVITIES.length) {
+        gridColumns = ACTIVITIES.length;
+    }
+    let repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`;
     document.getElementById("activityGrid").style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 };
 const ACTIVITY_COLOUR = "#123456";
@@ -11,8 +14,8 @@ const ACTIVITIES = [
     { type: "addition", title: "Addition", image: "Addition", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
     { type: "subtraction", title: "Subtraction", image: "Subtraction", imageColour: ACTIVITY_COLOUR, imageHeight: "20%" },
     { type: "multiplication", title: "Multiplication", image: "Multiplication", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
-    { type: "division", title: "Division", image: "Division", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
-    { type: "algebra", title: "Algebra", image: "Algebra", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
+    { type: "division", title: "Division", image: "Division", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
+    //{ type: "algebra", title: "Algebra", image: "Algebra", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
 ];
 const LoadActivities = () => {
     const activityGrid = document.getElementById("activityGrid");

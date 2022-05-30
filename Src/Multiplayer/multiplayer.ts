@@ -137,6 +137,7 @@ const PartyCodeCallback = (data: number) => { //everytime this is called and the
     }
 }
 const UpdateQuizTime = () => {
+    if (PARTY_CODE == -1) { return; }
     FirebaseWrite("Parties/" + PARTY_CODE + "/playerTimes/" + USER_ID, QUIZ_TIME);
 }
 
@@ -199,6 +200,7 @@ const LeaveParty = async () => {
 }
 
 const StartGame = () => {
+    if (PARTY_CODE == -1) { return; }
     FirebaseWrite("Parties/" + PARTY_CODE + "/gameStarted", true);
 }
 
