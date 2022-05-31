@@ -9,13 +9,23 @@ const ResizeGrid = () => {
     let repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`;
     document.getElementById("activityGrid").style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 };
+const Activity = (type, title, image, imageHeight, imageColour) => {
+    if (imageColour == undefined) {
+        imageColour = ACTIVITY_COLOUR;
+    }
+    if (imageHeight == undefined) {
+        imageHeight = "70%";
+    }
+    return { type: type, title: title, image: image, imageColour: imageColour, imageHeight: imageHeight };
+};
 const ACTIVITY_COLOUR = "#123456";
 const ACTIVITIES = [
-    { type: "addition", title: "Addition", image: "Addition", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
-    { type: "subtraction", title: "Subtraction", image: "Subtraction", imageColour: ACTIVITY_COLOUR, imageHeight: "20%" },
-    { type: "multiplication", title: "Multiplication", image: "Multiplication", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
-    { type: "division", title: "Division", image: "Division", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
-    //{ type: "algebra", title: "Algebra", image: "Algebra", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
+    Activity("addition", "Addition", "Addition"),
+    Activity("subtraction", "Subtraction", "Subtraction", "20%"),
+    Activity("multiplication", "Multiplication", "Multiplication"),
+    Activity("division", "Division", "Division"),
+    Activity("squareRoots3Digits", "Square Roots (2 - 3 digit)", "SquareRoot", "60%"),
+    Activity("squareRoots4Digits", "Square Roots (4 digit)", "SquareRoot", "60%")
 ];
 const LoadActivities = () => {
     const activityGrid = document.getElementById("activityGrid");

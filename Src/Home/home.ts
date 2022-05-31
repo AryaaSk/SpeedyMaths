@@ -9,21 +9,34 @@ const ResizeGrid = () => {
     document.getElementById("activityGrid")!.style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 }
 
-interface Activity {
+interface ActivityType {
     type: string, //lowercase
     title: string,
     image: string, //e.g. Addition for Addition.svg
     imageColour: string,
     imageHeight: string
 }
+const Activity = (type: string, title: string, image: string, imageHeight?: string, imageColour?: string) => {
+    if (imageColour == undefined) {
+        imageColour = ACTIVITY_COLOUR;
+    }
+    if (imageHeight == undefined) {
+        imageHeight = "70%";
+    }
+
+    return { type: type, title: title, image: image, imageColour: imageColour, imageHeight: imageHeight };
+}
+
 const ACTIVITY_COLOUR = "#123456";
-const ACTIVITIES: Activity[] = [
-    { type: "addition", title: "Addition", image: "Addition", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
-    { type: "subtraction", title: "Subtraction", image: "Subtraction", imageColour: ACTIVITY_COLOUR, imageHeight: "20%" },
-    { type: "multiplication", title: "Multiplication", image: "Multiplication", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" },
-    { type: "division", title: "Division", image: "Division", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
-    //{ type: "algebra", title: "Algebra", image: "Algebra", imageColour: ACTIVITY_COLOUR, imageHeight: "70%" }
+const ACTIVITIES: ActivityType[] = [
+    Activity("addition", "Addition", "Addition"),
+    Activity("subtraction", "Subtraction", "Subtraction", "20%"),
+    Activity("multiplication", "Multiplication", "Multiplication"),
+    Activity("division", "Division", "Division"),
+    Activity("squareRoots3Digits", "Square Roots (2 - 3 digit)", "SquareRoot", "60%"),
+    Activity("squareRoots4Digits", "Square Roots (4 digit)", "SquareRoot", "60%")
 ]
+
 const LoadActivities = () => {
     const activityGrid = document.getElementById("activityGrid")!;
     activityGrid.innerHTML = "";
@@ -33,7 +46,7 @@ const LoadActivities = () => {
         element.id = activity.type;
         element.className = "activity"
         element.dataset["type"] = activity.type;
-        element.innerHTML = 
+        element.innerHTML =
         `
             <div>
                 <h2 class="activityTitle">${activity.title}</h2>
@@ -121,7 +134,7 @@ const LoadListeners = () => {
     }
 }
 
-const OpenPopup = (activity: Activity) => {
+const OpenPopup = (activity: ActivityType) => {
     document.getElementById("popup")!.style.bottom = "0"
 
     document.getElementById("popupTitle")!.innerText = activity.title;
