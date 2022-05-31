@@ -1,48 +1,41 @@
-const ResizeGrid = () => {
-    //Add grid columns to the Activity Grid
-    const activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
-    let gridColumns = Math.floor((window.innerWidth - 150) / activityWidth);
-    if (gridColumns > ACTIVITIES.length) {
-        gridColumns = ACTIVITIES.length;
-    }
-    let repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`
-    document.getElementById("activityGrid")!.style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
-}
-
-interface ActivityType {
+interface DisplayedGameMode { //Used for migration from old system to new centralised GAME_MODEs system
     type: string, //lowercase
     title: string,
     image: string, //e.g. Addition for Addition.svg
     imageColour: string,
     imageHeight: string
 }
-const Activity = (type: string, title: string, image: string, imageHeight?: string, imageColour?: string) => {
-    if (imageColour == undefined) {
-        imageColour = ACTIVITY_COLOUR;
-    }
-    if (imageHeight == undefined) {
-        imageHeight = "70%";
-    }
+const DISPLAYED_GAME_MODES: DisplayedGameMode[] = [];
 
-    return { type: type, title: title, image: image, imageColour: imageColour, imageHeight: imageHeight };
+const GenerateActivities = () => {
+    for (const type in GAME_MODES) {
+        DISPLAYED_GAME_MODES.push( {
+            type: type,
+            title: GAME_MODES[type].displayTitle,
+            image: GAME_MODES[type].displayImage,
+            imageColour: GAME_MODES[type].imageColour,
+            imageHeight: GAME_MODES[type].imageHeight
+        } )
+    }
 }
 
-const ACTIVITY_COLOUR = "#123456";
-const ACTIVITIES: ActivityType[] = [
-    Activity("addition", "Addition", "Addition"),
-    Activity("subtraction", "Subtraction", "Subtraction", "20%"),
-    Activity("multiplication", "Multiplication", "Multiplication"),
-    Activity("division", "Division", "Division"),
-    Activity("squareNumbers", "Square Numbers", "XSquared"),
-    Activity("squareRoots3Digits", "Square Roots (2 - 3 digits)", "SquareRoot", "60%"),
-    Activity("squareRoots4Digits", "Square Roots (4 digits)", "SquareRoot", "60%")
-]
+const ResizeGrid = () => {
+    //Add grid columns to the Activity Grid
+    const activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
+    let gridColumns = Math.floor((window.innerWidth - 150) / activityWidth);
+    if (gridColumns > DISPLAYED_GAME_MODES.length) {
+        gridColumns = DISPLAYED_GAME_MODES.length;
+    }
+    let repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`
+    document.getElementById("activityGrid")!.style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
+}
+
 
 const LoadActivities = () => {
     const activityGrid = document.getElementById("activityGrid")!;
     activityGrid.innerHTML = "";
     
-    for (const activity of ACTIVITIES) {
+    for (const activity of DISPLAYED_GAME_MODES) {
         const element = document.createElement("div");
         element.id = activity.type;
         element.className = "activity"
@@ -122,11 +115,11 @@ const LoadSVGs = () => {
 }
 
 const LoadListeners = () => {
-    for (const activity of ACTIVITIES) {
-        const type = activity.type;
+    for (const gameMode of DISPLAYED_GAME_MODES) {
+        const type = gameMode.type;
         
         document.getElementById(type)!.onclick = () => {
-            OpenPopup(activity);
+            OpenPopup(gameMode);
         }
     }
 
@@ -135,19 +128,20 @@ const LoadListeners = () => {
     }
 }
 
-const OpenPopup = (activity: ActivityType) => {
+const OpenPopup = (gameMode: DisplayedGameMode) => {
     document.getElementById("popup")!.style.bottom = "0"
 
-    document.getElementById("popupTitle")!.innerText = activity.title;
+    document.getElementById("popupTitle")!.innerText = gameMode.title;
     document.getElementById("tutorial")!.onclick = () => {
-        console.log("Go to tutorial for: " + activity.type);
+        const url = `/Src/Tutorial/tutorial.html?type=${gameMode.type}`;
+        location.href = url;
     }
     document.getElementById("singlePlayer")!.onclick = () => {
-        const url = `/Src/Quiz/quiz.html?type=${activity.type}&&title=${activity.title}&&gameType=singlePlayer`
+        const url = `/Src/Quiz/quiz.html?type=${gameMode.type}&&title=${gameMode.title}&&gameType=singlePlayer`
         location.href = url;
     }
     document.getElementById("multiplayer")!.onclick = () => {
-        const url = `/Src/Multiplayer/multiplayer.html?type=${activity.type}&&title=${activity.title}`;
+        const url = `/Src/Multiplayer/multiplayer.html?type=${gameMode.type}&&title=${gameMode.title}`;
         location.href = url;
     }
 }
@@ -156,6 +150,8 @@ const ClosePopup = () => {
 }
 
 const MAIN_HOME = () => {
+    GenerateActivities();
+    
     ResizeGrid();
     document.body.onresize = () => { ResizeGrid(); }
 

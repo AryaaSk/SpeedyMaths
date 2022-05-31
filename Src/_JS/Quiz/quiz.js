@@ -33,7 +33,7 @@ const CreateQuestions = () => {
     const quizType = params.type;
     const questions = [];
     for (let i = 0; i != QUIZ_LENGTH; i += 1) {
-        const question = QUESTIONS[quizType]();
+        const question = GAME_MODES[quizType].questionCallback();
         questions.push(question);
     }
     return questions;
