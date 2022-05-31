@@ -37,7 +37,7 @@ const InitHTML = () => {
 };
 const InitListeners = () => {
     document.getElementById("goBack").onclick = () => {
-        const url = "/Src/Home/home.html";
+        const url = "home.html";
         location.href = url;
     };
     document.getElementById("username").onclick = () => {
@@ -207,7 +207,7 @@ const TransportPlayer = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const gameType = urlParams.get('type');
     const gameTitle = urlParams.get('title');
-    const url = `/Src/Quiz/quiz.html?type=${gameType}&&title=${gameTitle}&&gameType=multiplayer`;
+    const url = `quiz.html?type=${gameType}&&title=${gameTitle}&&gameType=multiplayer`;
     location.href = url;
 };
 const MAIN_MULTIPLAYER = () => __awaiter(void 0, void 0, void 0, function* () {

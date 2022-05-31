@@ -44,7 +44,7 @@ const LoadSVGs = () => {
         const hex = image.dataset["colour"].replace("#", "");
         const height = image.dataset["height"];
         //get svg file from assets folder
-        fetch(`/Assets/${name}.svg`).then((response) => {
+        fetch(`${name}.svg`).then((response) => {
             response.text().then((text) => {
                 const lines = text.split("\n");
                 let i = 0; //remove code injected by live-server
@@ -107,11 +107,11 @@ const OpenPopup = (activity) => {
         console.log("Go to tutorial for: " + activity.type);
     };
     document.getElementById("singlePlayer").onclick = () => {
-        const url = `/Src/Quiz/quiz.html?type=${activity.type}&&title=${activity.title}&&gameType=singlePlayer`;
+        const url = `quiz.html?type=${activity.type}&&title=${activity.title}&&gameType=singlePlayer`;
         location.href = url;
     };
     document.getElementById("multiplayer").onclick = () => {
-        const url = `/Src/Multiplayer/multiplayer.html?type=${activity.type}&&title=${activity.title}`;
+        const url = `multiplayer.html?type=${activity.type}&&title=${activity.title}`;
         location.href = url;
     };
 };

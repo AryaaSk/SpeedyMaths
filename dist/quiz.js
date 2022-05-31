@@ -103,13 +103,13 @@ const FinishQuiz = (timeTaken) => {
         //@ts-expect-error
         const gameType = params.gameType;
         if (gameType == "singlePlayer") {
-            location.href = "/Src/Home/home.html";
+            location.href = "home.html";
         }
         else if (gameType == "multiplayer") {
             const urlParams = new URLSearchParams(window.location.search);
             const type = urlParams.get('type');
             const title = urlParams.get('title');
-            location.href = `/Src/Multiplayer/multiplayer.html?type=${type}&&title=${title}&&time=${timeTaken}`;
+            location.href = `multiplayer.html?type=${type}&&title=${title}&&time=${timeTaken}`;
         }
     };
 };
