@@ -177,9 +177,9 @@ GAME_MODES["squareRoots4Digits"] = {
 //Square Symbol: ²
 GAME_MODES["monicQuadratics"] = {
     displayTitle: "Monic Quadratics",
-    displayImage: "Algebra",
+    displayImage: "MonicQuadratics",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
-    imageHeight: "70%",
+    imageHeight: "45%",
     questionCallback: () => {
         const [root1, root2] = GenerateRandomNumbers([1, 10], 2);
         const coefficient = root1 + root2;
@@ -196,5 +196,32 @@ GAME_MODES["monicQuadratics"] = {
         return { question: question, answer: answer, options: possibleOptions };
     },
     tutorialTitle: "How to Factorise a Monic Quadratic",
+    sections: []
+};
+const GenerateCoefficientsConstants = () => {
+    return GenerateRandomNumbers([2, 9], 2).concat(GenerateRandomNumbers([1, 10], 2));
+};
+GAME_MODES["quadratics"] = {
+    displayTitle: "Quadratics",
+    displayImage: "Quadratics",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "40%",
+    questionCallback: () => {
+        const [bracket1Coefficient, bracket2Coefficient, bracket1Constant, bracket2Constant] = GenerateCoefficientsConstants();
+        const a = bracket1Coefficient * bracket2Coefficient; //using a, b, c from polynomial: ax² + bx + c
+        const b = (bracket1Coefficient * bracket2Constant) + (bracket2Coefficient * bracket1Constant);
+        const c = bracket1Constant * bracket2Constant;
+        const question = `Factorise ${a}𝑥² + ${b}𝑥 + ${c}`;
+        const answer = `(${bracket1Coefficient}𝑥 + ${bracket1Constant})(${bracket2Coefficient}𝑥 + ${bracket2Constant})`;
+        const [wrong1Bracket1Coefficient, wrong1Bracket2Coefficient, wrong1Bracket1Constant, wrong1Bracket2Constant] = GenerateCoefficientsConstants(); //Generating wrong answers
+        const [wrong2Bracket1Coefficient, wrong2Bracket2Coefficient, wrong2Bracket1Constant, wrong2Bracket2Constant] = GenerateCoefficientsConstants();
+        const [wrong3Bracket1Coefficient, wrong3Bracket2Coefficient, wrong3Bracket1Constant, wrong3Bracket2Constant] = GenerateCoefficientsConstants();
+        const wrongAnswer1 = `(${wrong1Bracket1Coefficient}𝑥 + ${wrong1Bracket1Constant})(${wrong1Bracket2Coefficient}𝑥 + ${wrong1Bracket2Constant})`;
+        const wrongAnswer2 = `(${wrong2Bracket1Coefficient}𝑥 + ${wrong2Bracket1Constant})(${wrong2Bracket2Coefficient}𝑥 + ${wrong2Bracket2Constant})`;
+        const wrongAnswer3 = `(${wrong3Bracket1Coefficient}𝑥 + ${wrong3Bracket1Constant})(${wrong3Bracket2Coefficient}𝑥 + ${wrong3Bracket2Constant})`;
+        const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
+        return { question: question, answer: answer, options: possibleOptions };
+    },
+    tutorialTitle: "How to Factorise a Quadratic",
     sections: []
 };
