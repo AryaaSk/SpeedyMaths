@@ -16,6 +16,7 @@ const GetTutorial = () => {
 }
 
 
+
 const InitTutorial = () => {
     document.getElementById("title")!.innerText = TUTORIAL.title;
 
@@ -37,6 +38,10 @@ const InitTutorial = () => {
         document.body.append(sectionElement);
     }
 }
+
+
+
+
 
 
 const MAIN_TUTORIAL = () => {

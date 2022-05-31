@@ -5,7 +5,6 @@ let QUIZ_TIME: number | undefined = undefined;
 
 
 
-
 //DOM MANIPULTION
 const InitHTML = () => {
     (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
@@ -35,6 +34,7 @@ const InitHTML = () => {
         }
     }
 }
+
 const InitListeners = () => {
     document.getElementById("goBack")!.onclick = () => {
         const url = "/Src/Home/home.html";
@@ -61,7 +61,8 @@ const InitListeners = () => {
         StartGame();
     }
 }
-function removeParam(key: any, sourceURL: any): string {
+
+function removeParam(key: any, sourceURL: any): string { //https://stackoverflow.com/questions/16941104/remove-a-parameter-to-the-url-with-javascript
     var rtn = sourceURL.split("?")[0],
         param,
         params_arr = [],
@@ -81,8 +82,6 @@ function removeParam(key: any, sourceURL: any): string {
 
 
 
-
-
 //FIREBASE FUNCTIONS
 const GetUser = (): string[] => {
     //check local storage for a user id, if there isnt one then we create one, there should also be a username stored in local storage
@@ -99,13 +98,15 @@ const GetUser = (): string[] => {
         return [userID, username!];
     }
 }
+
 const ChangeUsername = (username: string) => {
     USERNAME = username;
     localStorage.setItem("username", username);
     FirebaseWrite("Players/" + USER_ID + "/username", username);
     (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
 }
-const SyncFirebase = async () => {
+
+const UpdateFirebase = async () => {
     //Check if the user already has a node in the Players list in firebase, if not then create one
     const playerNode = await FirebaseRead("Players/" + USER_ID);
     if (playerNode == undefined) {
@@ -126,6 +127,7 @@ const SyncFirebase = async () => {
         }
     }
 }
+
 const PartyCodeCallback = (data: number) => { //everytime this is called and the PARTY_CODE is different from the previous, the time is removed from the URL, since it means the user has either left the party or has joined a new one.
     let removedTime = removeParam("time", location.href);
     if (removedTime.endsWith("&")) {
@@ -136,12 +138,11 @@ const PartyCodeCallback = (data: number) => { //everytime this is called and the
         location.href = removedTime;
     }
 }
+
 const UpdateQuizTime = () => {
     if (PARTY_CODE == -1) { return; }
     FirebaseWrite("Parties/" + PARTY_CODE + "/playerTimes/" + USER_ID, QUIZ_TIME);
 }
-
-
 
 
 
@@ -201,9 +202,8 @@ const LeaveParty = async () => {
 
 const StartGame = () => {
     if (PARTY_CODE == -1) { return; }
-    FirebaseWrite("Parties/" + PARTY_CODE + "/gameStarted", true);
+    FirebaseWrite("Parties/" + PARTY_CODE + "/gameStarted", true); //should trigger the GameStartedCallback
 }
-
 
 
 
@@ -221,13 +221,15 @@ const UpdatePartyPlayers = async (data: any) => {
         playersList.append(listElement);
     }
 }
+
 const GameStartedCallback = (data: boolean) => {
     if (data != true) { return; }
 
     //Once you are past this point, then we know that the game has been started so the player must be transported to the quiz, and then we will see them again when they get sent back from the quiz
     TransportPlayer();
 }
-const TransportPlayer = () => {
+
+const TransportPlayer = () => { //transports player to the quiz, when they return they will have a url param of 'time'
     const urlParams = new URLSearchParams(window.location.search);
     const gameType = urlParams.get('type')!;
     const gameTitle = urlParams.get('title')!;
@@ -235,9 +237,6 @@ const TransportPlayer = () => {
     const url = `/Src/Quiz/quiz.html?type=${gameType}&&title=${gameTitle}&&gameType=multiplayer`
     location.href = url;
 }
-
-
-
 
 
 
@@ -255,7 +254,7 @@ const MAIN_MULTIPLAYER = async () => {
         QUIZ_TIME = Number(quizTimeString);
     }
 
-    await SyncFirebase();
+    await UpdateFirebase();
     FirebaseListen("Players/" + USER_ID + "/currentPartyCode", PartyCodeCallback);
     
     if (QUIZ_TIME != undefined) {

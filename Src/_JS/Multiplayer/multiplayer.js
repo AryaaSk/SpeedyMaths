@@ -98,7 +98,7 @@ const ChangeUsername = (username) => {
     FirebaseWrite("Players/" + USER_ID + "/username", username);
     document.getElementById("username").value = USERNAME;
 };
-const SyncFirebase = () => __awaiter(void 0, void 0, void 0, function* () {
+const UpdateFirebase = () => __awaiter(void 0, void 0, void 0, function* () {
     //Check if the user already has a node in the Players list in firebase, if not then create one
     const playerNode = yield FirebaseRead("Players/" + USER_ID);
     if (playerNode == undefined) {
@@ -181,7 +181,7 @@ const StartGame = () => {
     if (PARTY_CODE == -1) {
         return;
     }
-    FirebaseWrite("Parties/" + PARTY_CODE + "/gameStarted", true);
+    FirebaseWrite("Parties/" + PARTY_CODE + "/gameStarted", true); //should trigger the GameStartedCallback
 };
 //LOBBY MANAGEMENT
 const UpdatePartyPlayers = (data) => __awaiter(void 0, void 0, void 0, function* () {
@@ -220,7 +220,7 @@ const MAIN_MULTIPLAYER = () => __awaiter(void 0, void 0, void 0, function* () {
     else {
         QUIZ_TIME = Number(quizTimeString);
     }
-    yield SyncFirebase();
+    yield UpdateFirebase();
     FirebaseListen("Players/" + USER_ID + "/currentPartyCode", PartyCodeCallback);
     if (QUIZ_TIME != undefined) {
         UpdateQuizTime();

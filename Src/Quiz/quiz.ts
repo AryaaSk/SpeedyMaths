@@ -1,18 +1,17 @@
 //Generating Question Callbacks
 const QUIZ_LENGTH = 10;
 const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
+let WRONGLY_ANSWERED: any = 0; //Meant to be type number, but since 
 
-let WRONGLY_ANSWERED: any = 0;
+
 
 const InitQuiz = () => {
     WRONGLY_ANSWERED = 0;
 
-    //@ts-expect-error
-    const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
-    //@ts-expect-error
-    const quizTitle = params.title;
+    const urlParams = new URLSearchParams(window.location.search);
+    const title = urlParams.get('title')!;
 
-    document.getElementById("title")!.innerText = quizTitle;
+    document.getElementById("title")!.innerText = title;
 
     document.getElementById("option1")!.style.display = "grid";
     document.getElementById("option2")!.style.display = "grid";
@@ -26,26 +25,45 @@ const InitQuiz = () => {
 }
 
 const CreateQuestions = () => {
-    //@ts-expect-error
-    const params = new Proxy(new URLSearchParams(window.location.search), { get: (searchParams, prop) => searchParams.get(prop), });
-    //@ts-expect-error
-    const quizType = params.type;
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type')!;
 
     const questions: Question[] = [];
     for (let i = 0; i != QUIZ_LENGTH; i += 1) {
-        const question = GAME_MODES[quizType].questionCallback();
+        const question = GAME_MODES[type].questionCallback();
         questions.push(question);
     }
     return questions;
 }
 
+
+
+const UpdateTimerLoop = async (startTime: number) => {
+    const timer = document.getElementById("timer")!;
+    const interval = setInterval(() => {
+        const currentDate = Date.now();
+        const timeTaken = ((currentDate - startTime) + (WRONGLY_ANSWERED * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
+
+        const timeTakenStringSplit = String(timeTaken).split("."); //we always want there to be 3 decimal points to not confuse the user
+
+        let values = timeTakenStringSplit[0];
+        let decimals = timeTakenStringSplit[1];
+        while (decimals.length < 3) {
+            decimals = decimals + "0";
+        }
+
+        timer.innerText = `${values}.${decimals}s`;
+    }, 16);
+    return interval;
+}
+
 const DoQuestion = (question: Question) => {
     const promise = new Promise((resolve) => {
         document.getElementById("question")!.innerText = question.question;
-        document.getElementById("option1")!.innerText = String(question.options[0]);
-        document.getElementById("option2")!.innerText = String(question.options[1]);
-        document.getElementById("option3")!.innerText = String(question.options[2]);
-        document.getElementById("option4")!.innerText = String(question.options[3]);
+        document.getElementById("option1")!.innerText = question.options[0];
+        document.getElementById("option2")!.innerText = question.options[1];
+        document.getElementById("option3")!.innerText = question.options[2];
+        document.getElementById("option4")!.innerText = question.options[3];
 
         document.getElementById("option1")!.style.backgroundColor = "";
         document.getElementById("option2")!.style.backgroundColor = "";
@@ -72,12 +90,6 @@ const DoQuestion = (question: Question) => {
     return promise;
 }
 
-const UpdateProgressBar = (counter: number) => {
-    const progressBar = <HTMLProgressElement>document.getElementById("progressBar");
-    const percentage = counter / QUIZ_LENGTH * 100;
-    progressBar.value = percentage;
-}
-
 const DoQuiz = async (questions: Question[]) => {
     let counter = 1;
     for (const question of questions) {
@@ -87,24 +99,13 @@ const DoQuiz = async (questions: Question[]) => {
     }
 }
 
-const UpdateTimerLoop = async (startTime: number) => {
-    const timer = document.getElementById("timer")!;
-    const interval = setInterval(() => {
-        const currentDate = Date.now();
-        const timeTaken = ((currentDate - startTime) + (WRONGLY_ANSWERED * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
-
-        const timeTakenStringSplit = String(timeTaken).split("."); //we always want there to be 3 decimal points to not confuse the user
-
-        let values = timeTakenStringSplit[0];
-        let decimals = timeTakenStringSplit[1];
-        while (decimals.length < 3) {
-            decimals = decimals + "0";
-        }
-
-        timer.innerText = `${values}.${decimals}s`;
-    }, 16);
-    return interval;
+const UpdateProgressBar = (counter: number) => {
+    const progressBar = <HTMLProgressElement>document.getElementById("progressBar");
+    const percentage = counter / QUIZ_LENGTH * 100;
+    progressBar.value = percentage;
 }
+
+
 
 const FinishQuiz = (timeTaken: number) => {
     document.getElementById("question")!.innerText = "Completed";
@@ -138,6 +139,11 @@ const FinishQuiz = (timeTaken: number) => {
         }
     }
 }
+
+
+
+
+
 
 const MAIN_QUIZ = async () => {
     InitQuiz();

@@ -7,7 +7,7 @@ interface DisplayedGameMode { //Used for migration from old system to new centra
 }
 const DISPLAYED_GAME_MODES: DisplayedGameMode[] = [];
 
-const GenerateActivities = () => {
+const GetGameModes = () => { //takes game modes from the dictionary GAME_MODES, and converts them into a list (easier to work with)
     for (const type in GAME_MODES) {
         DISPLAYED_GAME_MODES.push( {
             type: type,
@@ -30,8 +30,7 @@ const ResizeGrid = () => {
     document.getElementById("activityGrid")!.style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 }
 
-
-const LoadActivities = () => {
+const LoadGameModes = () => {
     const activityGrid = document.getElementById("activityGrid")!;
     activityGrid.innerHTML = "";
     
@@ -150,12 +149,12 @@ const ClosePopup = () => {
 }
 
 const MAIN_HOME = () => {
-    GenerateActivities();
+    GetGameModes();
     
     ResizeGrid();
     document.body.onresize = () => { ResizeGrid(); }
 
-    LoadActivities();
+    LoadGameModes();
     LoadSVGs();
     LoadListeners();
 }

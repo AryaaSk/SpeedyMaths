@@ -6,7 +6,7 @@ const DEFAULT_ACTIVITY_HEIGHT = "70%";
 
 
 
-//QUIZ OBJECTS
+//QUIZ HELPERS
 const DEFAULT_INCORRECT_ANSWER_VICINITY = 50;
 
 const GenerateRandomNumbers = (range: number[], quantity: number) => { //Lower bound and Upper bound are inclusive
@@ -18,6 +18,7 @@ const GenerateRandomNumbers = (range: number[], quantity: number) => { //Lower b
     }
     return numberList
 }
+
 const GenerateIncorrectAnswer = (answer: number, vicinity: number) => {
     const answerOffset = Math.floor(Math.random() * vicinity * 2); //incorrect answer will be within the vicinity of the answer, e.g. vicinity = 100, incorrect answer will always be within 100 of the answer
     const incorrectAnswer = answer - vicinity + answerOffset;
@@ -37,26 +38,36 @@ function shuffle(array: any[]) { //https://stackoverflow.com/questions/2450954/h
 
 interface Question {
     question: string,
-    answer: number,
-    options: number[]
+    answer: string,
+    options: string[]
 }
-const PackageQuestion = (question: string, answer: number, vicinity?: number): Question => { //packages question into interface type and also generates incorrect answers
+
+const PackageQuestion = (question: string, answer: number, vicinity?: number, wrapper?: string): Question => { //packages question into interface type and also generates incorrect answers
     const incorrectVicinity = (vicinity == undefined) ? DEFAULT_INCORRECT_ANSWER_VICINITY : vicinity;
 
-    let possibleOptions = [];
-    possibleOptions.push(answer);
-    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
+    let possibleOptions: string[] = [];
+    const possible1 = GenerateIncorrectAnswer(answer, incorrectVicinity);
+    const possible2 = GenerateIncorrectAnswer(answer, incorrectVicinity);
+    const possible3 = GenerateIncorrectAnswer(answer, incorrectVicinity);
+
+    //now apply the wrapper - wrapper will be in form of x, for example if you wanted a Cos wrapper: "cos(x)"
+    const questionWrapper = (wrapper == undefined) ? "x" : wrapper;
+    const answerWrapped = questionWrapper.replace("x", String(answer));
+    const possible1Wrapped = questionWrapper.replace("x", String(possible1));
+    const possible2Wrapped = questionWrapper.replace("x", String(possible2));
+    const possible3Wrapped = questionWrapper.replace("x", String(possible3));
+    
+    possibleOptions = [answerWrapped, possible1Wrapped, possible2Wrapped, possible3Wrapped];
     possibleOptions = shuffle(possibleOptions);
-    return { question: question, answer: answer, options: possibleOptions}
+
+    return { question: question, answer: answerWrapped, options: possibleOptions};
 }
 
 
 
 
 
-//TUTORIAL OBJECTS
+//TUTORIAL HELPERS
 const Section = (subtitle: string, content: string) => {
     return { subtitle: subtitle, content: content };
 }
@@ -74,7 +85,7 @@ interface GameMode {
     imageHeight: string
 
     //Quiz
-    questionCallback: () => Question
+    questionCallback: () => Question //to generate a random question everytime
 
     //Tutorials
     tutorialTitle: string

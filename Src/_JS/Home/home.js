@@ -1,6 +1,6 @@
 "use strict";
 const DISPLAYED_GAME_MODES = [];
-const GenerateActivities = () => {
+const GetGameModes = () => {
     for (const type in GAME_MODES) {
         DISPLAYED_GAME_MODES.push({
             type: type,
@@ -21,7 +21,7 @@ const ResizeGrid = () => {
     let repeatProperty = `repeat(${gridColumns}, ${activityWidth}px)`;
     document.getElementById("activityGrid").style.gridTemplateColumns = repeatProperty; //NOT WORKING PROPERLY AT THE MOMENT, CSS ISN'T UPDATING
 };
-const LoadActivities = () => {
+const LoadGameModes = () => {
     const activityGrid = document.getElementById("activityGrid");
     activityGrid.innerHTML = "";
     for (const activity of DISPLAYED_GAME_MODES) {
@@ -124,10 +124,10 @@ const ClosePopup = () => {
     document.getElementById("popup").style.bottom = "-100vh";
 };
 const MAIN_HOME = () => {
-    GenerateActivities();
+    GetGameModes();
     ResizeGrid();
     document.body.onresize = () => { ResizeGrid(); };
-    LoadActivities();
+    LoadGameModes();
     LoadSVGs();
     LoadListeners();
 };

@@ -2,7 +2,7 @@
 //HOME PAGE DISPLAY OBJECTS
 const DEFAULT_ACTIVITY_COLOUR = "#123456";
 const DEFAULT_ACTIVITY_HEIGHT = "70%";
-//QUIZ OBJECTS
+//QUIZ HELPERS
 const DEFAULT_INCORRECT_ANSWER_VICINITY = 50;
 const GenerateRandomNumbers = (range, quantity) => {
     const numberList = [];
@@ -29,17 +29,23 @@ function shuffle(array) {
     }
     return array;
 }
-const PackageQuestion = (question, answer, vicinity) => {
+const PackageQuestion = (question, answer, vicinity, wrapper) => {
     const incorrectVicinity = (vicinity == undefined) ? DEFAULT_INCORRECT_ANSWER_VICINITY : vicinity;
     let possibleOptions = [];
-    possibleOptions.push(answer);
-    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
+    const possible1 = GenerateIncorrectAnswer(answer, incorrectVicinity);
+    const possible2 = GenerateIncorrectAnswer(answer, incorrectVicinity);
+    const possible3 = GenerateIncorrectAnswer(answer, incorrectVicinity);
+    //now apply the wrapper - wrapper will be in form of x, for example if you wanted a Cos wrapper: "cos(x)"
+    const questionWrapper = (wrapper == undefined) ? "x" : wrapper;
+    const answerWrapped = questionWrapper.replace("x", String(answer));
+    const possible1Wrapped = questionWrapper.replace("x", String(possible1));
+    const possible2Wrapped = questionWrapper.replace("x", String(possible2));
+    const possible3Wrapped = questionWrapper.replace("x", String(possible3));
+    possibleOptions = [answerWrapped, possible1Wrapped, possible2Wrapped, possible3Wrapped];
     possibleOptions = shuffle(possibleOptions);
-    return { question: question, answer: answer, options: possibleOptions };
+    return { question: question, answer: answerWrapped, options: possibleOptions };
 };
-//TUTORIAL OBJECTS
+//TUTORIAL HELPERS
 const Section = (subtitle, content) => {
     return { subtitle: subtitle, content: content };
 };
