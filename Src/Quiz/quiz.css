@@ -63,9 +63,13 @@ body {
     font-weight: 600;
 }
 
+#progressBar {
+    width: 90%;
+}
+
 #doneButton {
     height: 60%;
-    width: 80%;
+    width: 90%;
 
     background-color: var(--themeColour);
     border: none;

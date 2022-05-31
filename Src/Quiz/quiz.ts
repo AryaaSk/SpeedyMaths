@@ -1,5 +1,5 @@
 //Generating Question Callbacks
-const QUIZ_LENGTH = 2;
+const QUIZ_LENGTH = 10;
 const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
 
 let WRONGLY_ANSWERED: any = 0;
@@ -20,6 +20,8 @@ const InitQuiz = () => {
     document.getElementById("option4")!.style.display = "grid";
 
     document.getElementById("timeTaken")!.style.display = "none";
+
+    (<HTMLProgressElement>document.getElementById("progressBar")!).value = 0;
     document.getElementById("doneButton")!.style.display = "none";
 }
 
@@ -70,9 +72,18 @@ const DoQuestion = (question: Question) => {
     return promise;
 }
 
+const UpdateProgressBar = (counter: number) => {
+    const progressBar = <HTMLProgressElement>document.getElementById("progressBar");
+    const percentage = counter / QUIZ_LENGTH * 100;
+    progressBar.value = percentage;
+}
+
 const DoQuiz = async (questions: Question[]) => {
+    let counter = 1;
     for (const question of questions) {
         await DoQuestion(question);
+        UpdateProgressBar(counter);
+        counter += 1;
     }
 }
 
@@ -103,6 +114,8 @@ const FinishQuiz = (timeTaken: number) => {
     document.getElementById("option4")!.style.display = "none";
 
     document.getElementById("timer")!.style.display = "none";
+    document.getElementById("progressBar")!.style.display = "none";
+
     document.getElementById("timeTaken")!.style.display = "grid"; //since I use that to center the text
     document.getElementById("doneButton")!.style.display = "block";
 

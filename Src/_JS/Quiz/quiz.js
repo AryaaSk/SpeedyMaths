@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 //Generating Question Callbacks
-const QUIZ_LENGTH = 2;
+const QUIZ_LENGTH = 10;
 const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
 let WRONGLY_ANSWERED = 0;
 const InitQuiz = () => {
@@ -24,6 +24,7 @@ const InitQuiz = () => {
     document.getElementById("option3").style.display = "grid";
     document.getElementById("option4").style.display = "grid";
     document.getElementById("timeTaken").style.display = "none";
+    document.getElementById("progressBar").value = 0;
     document.getElementById("doneButton").style.display = "none";
 };
 const CreateQuestions = () => {
@@ -67,9 +68,17 @@ const DoQuestion = (question) => {
     });
     return promise;
 };
+const UpdateProgressBar = (counter) => {
+    const progressBar = document.getElementById("progressBar");
+    const percentage = counter / QUIZ_LENGTH * 100;
+    progressBar.value = percentage;
+};
 const DoQuiz = (questions) => __awaiter(void 0, void 0, void 0, function* () {
+    let counter = 1;
     for (const question of questions) {
         yield DoQuestion(question);
+        UpdateProgressBar(counter);
+        counter += 1;
     }
 });
 const UpdateTimerLoop = (startTime) => __awaiter(void 0, void 0, void 0, function* () {
@@ -94,6 +103,7 @@ const FinishQuiz = (timeTaken) => {
     document.getElementById("option3").style.display = "none";
     document.getElementById("option4").style.display = "none";
     document.getElementById("timer").style.display = "none";
+    document.getElementById("progressBar").style.display = "none";
     document.getElementById("timeTaken").style.display = "grid"; //since I use that to center the text
     document.getElementById("doneButton").style.display = "block";
     document.getElementById("timeTaken").innerText = `Time: ${timeTaken}s`;
