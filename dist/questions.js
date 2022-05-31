@@ -1,5 +1,5 @@
 "use strict";
-const INCORRECT_ANSWER_VICINITY = 50;
+const DEFAULT_INCORRECT_ANSWER_VICINITY = 50;
 const GenerateRandomNumbers = (range, quantity) => {
     const numberList = [];
     for (let i = 0; i != quantity; i += 1) {
@@ -25,12 +25,13 @@ function shuffle(array) {
     }
     return array;
 }
-const PackageQuestion = (question, answer) => {
+const PackageQuestion = (question, answer, vicinity) => {
+    const incorrectVicinity = (vicinity == undefined) ? DEFAULT_INCORRECT_ANSWER_VICINITY : vicinity;
     let possibleOptions = [];
     possibleOptions.push(answer);
-    possibleOptions.push(GenerateIncorrectAnswer(answer, INCORRECT_ANSWER_VICINITY));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, INCORRECT_ANSWER_VICINITY));
-    possibleOptions.push(GenerateIncorrectAnswer(answer, INCORRECT_ANSWER_VICINITY));
+    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
+    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
+    possibleOptions.push(GenerateIncorrectAnswer(answer, incorrectVicinity));
     possibleOptions = shuffle(possibleOptions);
     return { question: question, answer: answer, options: possibleOptions };
 };
@@ -59,4 +60,24 @@ QUESTIONS["division"] = () => {
     const question = `${result} / ${num1}`; //So that we avoid giving the user a decimal number
     const answer = num2;
     return PackageQuestion(question, answer);
+};
+QUESTIONS["squareNumbers"] = () => {
+    const [num] = GenerateRandomNumbers([0, 20], 1);
+    const question = `${num} squared`;
+    const answer = num * num;
+    return PackageQuestion(question, answer);
+};
+QUESTIONS["squareRoots3Digits"] = () => {
+    const [num] = GenerateRandomNumbers([0, 20], 1);
+    const result = num * num;
+    const question = `Square Root of: ${result}`;
+    const answer = num;
+    return PackageQuestion(question, answer, 10);
+};
+QUESTIONS["squareRoots4Digits"] = () => {
+    const [num] = GenerateRandomNumbers([32, 99], 1);
+    const result = num * num;
+    const question = `Square Root of: ${result}`;
+    const answer = num;
+    return PackageQuestion(question, answer, 10);
 };

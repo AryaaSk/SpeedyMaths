@@ -24,8 +24,9 @@ const ACTIVITIES = [
     Activity("subtraction", "Subtraction", "Subtraction", "20%"),
     Activity("multiplication", "Multiplication", "Multiplication"),
     Activity("division", "Division", "Division"),
-    Activity("squareRoots3Digits", "Square Roots (2 - 3 digit)", "SquareRoot", "60%"),
-    Activity("squareRoots4Digits", "Square Roots (4 digit)", "SquareRoot", "60%")
+    Activity("squareNumbers", "Square Numbers", "XSquared"),
+    Activity("squareRoots3Digits", "Square Roots (2 - 3 digits)", "SquareRoot", "60%"),
+    Activity("squareRoots4Digits", "Square Roots (4 digits)", "SquareRoot", "60%")
 ];
 const LoadActivities = () => {
     const activityGrid = document.getElementById("activityGrid");

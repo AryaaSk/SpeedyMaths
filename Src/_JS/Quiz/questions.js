@@ -61,6 +61,12 @@ QUESTIONS["division"] = () => {
     const answer = num2;
     return PackageQuestion(question, answer);
 };
+QUESTIONS["squareNumbers"] = () => {
+    const [num] = GenerateRandomNumbers([0, 20], 1);
+    const question = `${num} squared`;
+    const answer = num * num;
+    return PackageQuestion(question, answer);
+};
 QUESTIONS["squareRoots3Digits"] = () => {
     const [num] = GenerateRandomNumbers([0, 20], 1);
     const result = num * num;
