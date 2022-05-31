@@ -88,8 +88,13 @@ const GetUser = (): string[] => {
     const userID = localStorage.getItem("userID");
     if (userID == undefined) {
         const generatedUserID = String(Math.floor(Math.random() * (9999999999999999 - 1000000000000000 + 1) + 1000000000000000));
-        const username = "SpeedyMathsPlayer";
-        localStorage.setItem("userID", generatedUserID);
+
+        const range = [10, 99];
+        const offset = Math.round((Math.random() * (range[1] - range[0])));
+        const num = range[0] + offset;
+        const username = "SpeedyMaths" + num; //username with random numbers after
+
+        localStorage.setItem("userID", generatedUserID); //saving to local storage, so
         localStorage.setItem("username", username);
         return [generatedUserID, username];
     }
