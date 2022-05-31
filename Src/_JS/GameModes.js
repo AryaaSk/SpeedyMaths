@@ -173,3 +173,28 @@ GAME_MODES["squareRoots4Digits"] = {
         Section("Step 3", "After combining the first digit and second digit, we are left with 2 possibilities: 43 or 47. Now we can just approximate, 50 squared is 2500, and 40 squared is 1600, it is closer to 1600, so it must be 43, which gives us the result of 43.")
     ]
 };
+//Algebra X Symbol: 𝑥
+//Square Symbol: ²
+GAME_MODES["monicQuadratics"] = {
+    displayTitle: "Monic Quadratics",
+    displayImage: "Algebra",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "70%",
+    questionCallback: () => {
+        const [root1, root2] = GenerateRandomNumbers([1, 10], 2);
+        const coefficient = root1 + root2;
+        const yIntercept = root1 * root2;
+        const question = `Factorise 𝑥² + ${coefficient}𝑥 + ${yIntercept}`;
+        const answer = `(𝑥 + ${root1})(𝑥 + ${root2})`;
+        const [pair1Root1, pair1Root2] = GenerateRandomNumbers([1, 10], 2); //Generating wrong answers
+        const [pair2Root1, pair2Root2] = GenerateRandomNumbers([1, 10], 2);
+        const [pair3Root1, pair3Root2] = GenerateRandomNumbers([1, 10], 2);
+        const wrongAnswer1 = `(𝑥 + ${pair1Root1})(𝑥 + ${pair1Root2})`;
+        const wrongAnswer2 = `(𝑥 + ${pair2Root1})(𝑥 + ${pair2Root2})`;
+        const wrongAnswer3 = `(𝑥 + ${pair3Root1})(𝑥 + ${pair3Root2})`;
+        const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
+        return { question: question, answer: answer, options: possibleOptions };
+    },
+    tutorialTitle: "How to Factorise a Monic Quadratic",
+    sections: []
+};
