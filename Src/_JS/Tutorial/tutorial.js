@@ -9,7 +9,17 @@ const GetTutorial = () => {
 const InitTutorial = () => {
     document.getElementById("title").innerText = TUTORIAL.title;
     for (const section of TUTORIAL.sections) {
-        console.log(section);
+        const sectionElement = document.createElement("div");
+        sectionElement.className = "section";
+        const subtitleElement = document.createElement("h2");
+        subtitleElement.className = "subtitle";
+        subtitleElement.innerText = section.subtitle;
+        const contentElement = document.createElement("p");
+        contentElement.className = "content";
+        contentElement.innerText = section.content;
+        sectionElement.append(subtitleElement);
+        sectionElement.append(contentElement);
+        document.body.append(sectionElement);
     }
 };
 const MAIN_TUTORIAL = () => {

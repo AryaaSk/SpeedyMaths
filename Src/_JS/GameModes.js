@@ -58,8 +58,8 @@ GAME_MODES["addition"] = {
     },
     tutorialTitle: "How to do Addition",
     sections: [
-        Section("Think of real life objects", "You can use your fingers to count upto 10"),
-        Section("Memorise number bonds", "Memorise all the number bonds upto 10, e.g. 4+6 or 1+9, then you can become very fast by compounding these together")
+        Section("Think of real life objects", "You can use your fingers to count upto 10."),
+        Section("Memorise number bonds", "Memorise all the number bonds upto 10, e.g. 4+6 or 1+9, then you can become very fast at addition by compounding these together.")
     ]
 };
 GAME_MODES["subtraction"] = {
@@ -74,7 +74,10 @@ GAME_MODES["subtraction"] = {
         return PackageQuestion(question, answer);
     },
     tutorialTitle: "How to do Subtraction",
-    sections: []
+    sections: [
+        Section("Think of real life objects", "You can use your fingers to count down from 10."),
+        Section("Memorise number combinations", "Memorise all the number combinations upto 10, e.g. 9-5=4 and 6-3=3.")
+    ]
 };
 GAME_MODES["multiplication"] = {
     displayTitle: "Multiplication",
@@ -88,7 +91,10 @@ GAME_MODES["multiplication"] = {
         return PackageQuestion(question, answer);
     },
     tutorialTitle: "How to do Multiplication",
-    sections: []
+    sections: [
+        Section("Memorize", "The best way to become fast at multiplication is to memorise the basic combinations upto 25, since you will not use combinations after that regularly."),
+        Section("Use Addition Knowledge", "Multiplication is just a lot of addition, so you can use your addition knowledge to perform multiplication operations quickly.")
+    ]
 };
 GAME_MODES["division"] = {
     displayTitle: "Division",
@@ -103,7 +109,9 @@ GAME_MODES["division"] = {
         return PackageQuestion(question, answer);
     },
     tutorialTitle: "How to do Division",
-    sections: []
+    sections: [
+        Section("Use Multiplication Knowledge", "Division is the inverse of multiplication, so just you multiplication knowledge to help in division, for example if a question was 56 / 8 = ?, you know that 8 * 7 = 56, so the answer is 7.")
+    ]
 };
 GAME_MODES["squareNumbers"] = {
     displayTitle: "Square Numbers",
@@ -117,7 +125,10 @@ GAME_MODES["squareNumbers"] = {
         return PackageQuestion(question, answer);
     },
     tutorialTitle: "How to Square a Number",
-    sections: []
+    sections: [
+        Section("Multiplication Knowledge", "If you have practiced your multiplication combinations upto 25, then the square numbers from 0 - 25 should be easy since they are just a subset of the multiplication combinations."),
+        Section("Approximate", "You can look at the last digit of the original number, then just square that to find the last digit of the result. For example if the question was square 23, you know the last digit will be 9 since 3 squared is 9.")
+    ]
 };
 GAME_MODES["squareRoots3Digits"] = {
     displayTitle: "Square Roots (2 - 3 digits)",
@@ -132,7 +143,9 @@ GAME_MODES["squareRoots3Digits"] = {
         return PackageQuestion(question, answer, 10);
     },
     tutorialTitle: "How to Square Root (2 - 3 digits)",
-    sections: []
+    sections: [
+        Section("Memorize", "Square roots are mainly trial error, especially 2 - 3 digits, so the best way to become quick is just to memorize the perfect squares from 0 - 1000.")
+    ]
 };
 GAME_MODES["squareRoots4Digits"] = {
     displayTitle: "Square Roots (4 digits)",
@@ -147,5 +160,10 @@ GAME_MODES["squareRoots4Digits"] = {
         return PackageQuestion(question, answer, 10);
     },
     tutorialTitle: "How to Square Root (4 digits)",
-    sections: []
+    sections: [
+        Section("Use this trick", "Square roots of 4 digit numbers are quite difficult to memorize, so use this trick below to find the square root of 1849"),
+        Section("Step 1", "Look at the last digit, it is 9, so you know the last digit of the original number is either 3 or 7 (3 squared = 9, 7 squared = 49)."),
+        Section("Step 2", "Look at the first 2 digits, and find the nearest square from 0 - 9 which gives a lower number, the first 2 digits are 18, then the first digit of the original number must be 4, since 4 squared is 16, and it can't be 5 since 5 squared is 25."),
+        Section("Step 3", "After combining the first digit and second digit, we are left with 2 possibilities: 43 or 47. Now we can just approximate, 50 squared is 2500, and 40 squared is 1600, it is closer to 1600, so it must be 43, which gives us the result of 43.")
+    ]
 };
