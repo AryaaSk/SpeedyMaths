@@ -1,6 +1,7 @@
 "use strict";
-const DISPLAYED_GAME_MODES = [];
+let DISPLAYED_GAME_MODES = [];
 const GetGameModes = () => {
+    DISPLAYED_GAME_MODES = [];
     for (const type in GAME_MODES) {
         DISPLAYED_GAME_MODES.push({
             type: type,
@@ -94,6 +95,30 @@ const LoadSVGs = () => {
     }
 };
 const LoadListeners = () => {
+    const searchBar = document.getElementById("searchBar");
+    searchBar.oninput = () => {
+        const searchText = searchBar.value.toLowerCase();
+        if (searchText == null || searchText == "") {
+            GetGameModes();
+            LoadGameModes(); //need to redraw the DOM
+            LoadSVGs();
+            return;
+        }
+        //filter the gameModes in DISPLAYED_GAME_MODES, only the ones which match the searchText
+        GetGameModes();
+        let i = 0;
+        while (i != DISPLAYED_GAME_MODES.length) {
+            const title = DISPLAYED_GAME_MODES[i].title.toLowerCase();
+            if (title.includes(searchText) == false) { //remove from list if the title does not include the search term
+                DISPLAYED_GAME_MODES.splice(i, 1);
+            }
+            else {
+                i += 1;
+            }
+        }
+        LoadGameModes(); //need to redraw the DOM
+        LoadSVGs();
+    };
     for (const gameMode of DISPLAYED_GAME_MODES) {
         const type = gameMode.type;
         document.getElementById(type).onclick = () => {

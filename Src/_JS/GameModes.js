@@ -137,8 +137,8 @@ GAME_MODES["squareNumbers"] = {
     ]
 };
 GAME_MODES["squareRoots3Digits"] = {
-    displayTitle: "Square Roots (2 - 3 digits)",
-    displayImage: "SquareRoot",
+    displayTitle: "Square Roots\n(2 - 3 digits)",
+    displayImage: "SquareRootShort",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "60%",
     questionCallback: () => {
@@ -148,13 +148,13 @@ GAME_MODES["squareRoots3Digits"] = {
         const answer = num;
         return PackageQuestion(question, answer, 10);
     },
-    tutorialTitle: "How to Square Root (2 - 3 digits)",
+    tutorialTitle: "How to calculate Square Roots (2 - 3 digits)",
     sections: [
         Section("Memorize", "Square roots are mainly trial error, especially 2 - 3 digits, so the best way to become quick is just to memorize the perfect squares from 0 - 1000.")
     ]
 };
 GAME_MODES["squareRoots4Digits"] = {
-    displayTitle: "Square Roots (4 digits)",
+    displayTitle: "Square Roots\n(4 digits)",
     displayImage: "SquareRoot",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "60%",
@@ -165,12 +165,29 @@ GAME_MODES["squareRoots4Digits"] = {
         const answer = num;
         return PackageQuestion(question, answer, 10);
     },
-    tutorialTitle: "How to Square Root (4 digits)",
+    tutorialTitle: "How to calculate Square Roots (4 digits)",
     sections: [
         Section("Use this trick", "Square roots of 4 digit numbers are quite difficult to memorize, so use this trick below to find the square root of 1849"),
         Section("Step 1", "Look at the last digit, it is 9, so you know the last digit of the original number is either 3 or 7 (3 squared = 9, 7 squared = 49)."),
         Section("Step 2", "Look at the first 2 digits, and find the nearest square from 0 - 9 which gives a lower number, the first 2 digits are 18, then the first digit of the original number must be 4, since 4 squared is 16, and it can't be 5 since 5 squared is 25."),
         Section("Step 3", "After combining the first digit and second digit, we are left with 2 possibilities: 43 or 47. Now we can just approximate, 50 squared is 2500, and 40 squared is 1600, it is closer to 1600, so it must be 43, which gives us the result of 43.")
+    ]
+};
+GAME_MODES["cubeRoots"] = {
+    displayTitle: "Cube Roots",
+    displayImage: "CubeRoots",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "60%",
+    questionCallback: () => {
+        const [num] = GenerateRandomNumbers([0, 15], 1);
+        const result = num ** 3;
+        const question = `Cube Root of: ${result}`;
+        const answer = num;
+        return PackageQuestion(question, answer, 10);
+    },
+    tutorialTitle: "How to calculate Cube Roots",
+    sections: [
+        Section("Look at the last digit", "You can get fast at approximating a cube root, by looking at it's last digit, for example if the last digit is 5 then the original number must end in a 5.")
     ]
 };
 //Algebra X Symbol: 𝑥

@@ -26,6 +26,9 @@ The home screen is just to allow the user to select which operation they want to
 ### Artwork
 All the artwork is done in Figma, then I export it as an SVG file into the Assets. Then I just add their names to an <img> tag inside of HTML, which is dynamically embedded with the correct SVG as well as a custom colour in Javascript.
 
+### Searching
+There is also a search bar (not in the preview since it was created after the screenshot), it just gets all the game modes, then removes them selectively if the search term is contained inside of the title.
+
 ## The Quiz
 The quiz is just a multiple choice quiz, 10 questions and timed from when you enter to when you have finished the last question. If you get a question wrong, the quiz does not move on, and adds 5 seconds onto the timer to stop people from just spamming all the answers.
 
