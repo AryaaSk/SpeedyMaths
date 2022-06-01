@@ -146,6 +146,10 @@ const FinishQuiz = (timeTaken: number) => {
 
 
 const MAIN_QUIZ = async () => {
+    window.onbeforeunload = () => {
+        return "Are you sure you want to refresh the quiz";
+    }
+
     InitQuiz();
     const startTime = Date.now();
     const questions = CreateQuestions();
@@ -156,6 +160,8 @@ const MAIN_QUIZ = async () => {
     clearInterval(timerInterval);
     const timeTaken = ((endTime - startTime) + (WRONGLY_ANSWERED * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
     FinishQuiz(timeTaken);
+
+    window.onbeforeunload = () => {} //reset function to allow user to leave page
 }
 
 MAIN_QUIZ();

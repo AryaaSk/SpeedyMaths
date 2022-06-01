@@ -161,7 +161,7 @@ const LoadListeners = () => {
 }
 
 const OpenPopup = (gameMode: DisplayedGameMode) => {
-    document.getElementById("popup")!.style.bottom = "0"
+    document.getElementById("popup")!.style.bottom = "0";
 
     document.getElementById("popupTitle")!.innerText = gameMode.title;
     document.getElementById("tutorial")!.onclick = () => {

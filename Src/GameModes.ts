@@ -381,7 +381,7 @@ const arrayToFractionQuestion = (fraction: number[]) => {
     return `<sup>${fraction[0]}</sup>/<sub>${fraction[1]}</sub>`;
 }
 const arrayToFractionAnswer = (fraction: number[]) => {
-    return `<div class="numerator">${fraction[0]}</div><div class="denominator">${fraction[1]}</div>​`;
+    return `<div class="numerator">${fraction[0]}</div><div class="denominator">${fraction[1]}</div>`;
 }
 GAME_MODES["fractionAddition"] = {
     displayTitle: "Fraction Addition",
