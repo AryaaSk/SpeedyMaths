@@ -37,6 +37,11 @@ const InitTutorial = () => {
 
         document.body.append(sectionElement);
     }
+
+    document.getElementById("goBack")!.onclick = () => {
+        const url = "/Src/Home/home.html";
+        location.href = url;
+    }
 }
 
 
