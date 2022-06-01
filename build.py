@@ -82,4 +82,4 @@ for file in filePaths:
     f.write(fileString)
     f.close()
 
-print("Successfully built project, output is in the dist/ folder")
+print("Successfully built project, output is in the dist folder")
