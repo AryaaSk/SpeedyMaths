@@ -47,7 +47,7 @@ const UpdateTimerLoop = async (startTime: number) => {
         const timeTakenStringSplit = String(timeTaken).split("."); //we always want there to be 3 decimal points to not confuse the user
 
         let values = timeTakenStringSplit[0];
-        let decimals = timeTakenStringSplit[1];
+        let decimals = (timeTakenStringSplit.length == 2) ? timeTakenStringSplit[1] : "000"; //error happens when timeTakenSplit only contains 1 element, this could happen because there is no . because the time taken is in perfect seconds
         while (decimals.length < 3) {
             decimals = decimals + "0";
         }

@@ -267,3 +267,44 @@ GAME_MODES["logarithms"] = {
         Section("Think about exponents", "Logarithms are just the inverse to exponents, for example 2^𝑥 = 8, is the same as 𝑥 = log₂(8), therefore you can solve 𝑥 to be 3, due to exponents practice.")
     ]
 };
+function reduce(numerator, denominator) {
+    var gcd = function gcd(a, b) {
+        return b ? gcd(b, a % b) : a;
+    };
+    gcd = gcd(numerator, denominator);
+    return [numerator / gcd, denominator / gcd];
+}
+const arrayToFractionQuestion = (fraction) => {
+    return `<sup>${fraction[0]}</sup>/<sub>${fraction[1]}</sub>`;
+};
+const arrayToFractionAnswer = (fraction) => {
+    return `<div class="numerator">${fraction[0]}</div><div class="denominator">${fraction[1]}</div>​`;
+};
+GAME_MODES["fractionAddition"] = {
+    displayTitle: "Fraction Addition",
+    displayImage: "Fractions",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "70%",
+    questionCallback: () => {
+        const [numerator1, denominator1] = GenerateRandomNumbers([1, 10], 2);
+        const [numerator2, denominator2] = GenerateRandomNumbers([1, 10], 2);
+        const fraction1 = reduce(numerator1, denominator1);
+        const fraction2 = reduce(numerator2, denominator2);
+        const normalizedNumerator1 = fraction1[0] * fraction2[1];
+        const normalizedNumerator2 = fraction1[1] * fraction2[0];
+        const normalizedDenominator = fraction1[1] * fraction2[1];
+        const answerFraction = reduce(normalizedNumerator1 + normalizedNumerator2, normalizedDenominator);
+        const wrongAnswer1 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 5));
+        const wrongAnswer2 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 5));
+        const wrongAnswer3 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 5));
+        const question = `${arrayToFractionQuestion(fraction1)} + ${arrayToFractionQuestion(fraction2)}`;
+        const possibleOptions = shuffle([arrayToFractionAnswer(answerFraction), arrayToFractionAnswer(wrongAnswer1), arrayToFractionAnswer(wrongAnswer2), arrayToFractionAnswer(wrongAnswer3)]);
+        return { question: question, answer: arrayToFractionAnswer(answerFraction), options: possibleOptions };
+    },
+    tutorialTitle: "How to add together Fractions",
+    sections: [
+        Section("Find Common Denominator", "To add together 2 fractions, first you need to make sure they have the same denomiantor, to do this try and find the LCM of the 2 denominators, if you are stuck then you can just multiply both of them together."),
+        Section("Add together Numerators", "Once you have a common multiple for the denominators, multiply both sides of the fraction until the denominator has reached that.\nThen once both fractions have the same denominator, you can just add them together."),
+        Section("Simplify Result", "After adding together both numerators, you will be left with a fraction with this total/(common denominator), then just simplify the fraction until you cannot reduce either side anymore.")
+    ]
+};

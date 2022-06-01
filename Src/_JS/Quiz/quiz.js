@@ -42,7 +42,7 @@ const UpdateTimerLoop = (startTime) => __awaiter(void 0, void 0, void 0, functio
         const timeTaken = ((currentDate - startTime) + (WRONGLY_ANSWERED * INCORRECT_ANSWER_TIME_PENALTY_MS)) / 1000; //seconds
         const timeTakenStringSplit = String(timeTaken).split("."); //we always want there to be 3 decimal points to not confuse the user
         let values = timeTakenStringSplit[0];
-        let decimals = timeTakenStringSplit[1];
+        let decimals = (timeTakenStringSplit.length == 2) ? timeTakenStringSplit[1] : "000"; //error happens when timeTakenSplit only contains 1 element, this could happen because there is no . because the time taken is in perfect seconds
         while (decimals.length < 3) {
             decimals = decimals + "0";
         }

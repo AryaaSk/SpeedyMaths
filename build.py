@@ -62,7 +62,10 @@ for file in filePaths:
     destPath = f"dist/{file.name}"
 
     f = open(srcPath, "r")
-    lines = f.readlines()
+    try:
+        lines = f.readlines()
+    except:
+        print(f"Unable to parse file: {srcPath}")
     f.close()
 
     fileString = ""

@@ -122,6 +122,7 @@ const LoadListeners = () => {
             GetGameModes();
             LoadGameModes(); //need to redraw the DOM
             LoadSVGs();
+            LoadListeners();
             return;
         }
 
@@ -141,6 +142,7 @@ const LoadListeners = () => {
 
         LoadGameModes(); //need to redraw the DOM
         LoadSVGs();
+        LoadListeners();
     }
 
     for (const gameMode of DISPLAYED_GAME_MODES) {

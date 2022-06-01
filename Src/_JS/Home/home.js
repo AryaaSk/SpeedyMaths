@@ -102,6 +102,7 @@ const LoadListeners = () => {
             GetGameModes();
             LoadGameModes(); //need to redraw the DOM
             LoadSVGs();
+            LoadListeners();
             return;
         }
         //filter the gameModes in DISPLAYED_GAME_MODES, only the ones which match the searchText
@@ -118,6 +119,7 @@ const LoadListeners = () => {
         }
         LoadGameModes(); //need to redraw the DOM
         LoadSVGs();
+        LoadListeners();
     };
     for (const gameMode of DISPLAYED_GAME_MODES) {
         const type = gameMode.type;

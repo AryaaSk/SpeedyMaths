@@ -87,3 +87,8 @@ body {
     color: white;
     font-size: 2rem;
 }
+
+
+/* Game Mode Specific */
+.numerator{border-bottom:solid var(--themeColour) 5px; display:inline-block;} /* For fractions */
+.denominator{ display:inline-block; clear:left;}
