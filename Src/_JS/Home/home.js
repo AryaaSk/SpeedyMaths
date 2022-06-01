@@ -1,9 +1,9 @@
 "use strict";
 let DISPLAYED_GAME_MODES = [];
 const GetGameModes = () => {
-    DISPLAYED_GAME_MODES = [];
+    const DisplayedGameModes = [];
     for (const type in GAME_MODES) {
-        DISPLAYED_GAME_MODES.push({
+        DisplayedGameModes.push({
             type: type,
             title: GAME_MODES[type].displayTitle,
             image: GAME_MODES[type].displayImage,
@@ -11,10 +11,15 @@ const GetGameModes = () => {
             imageHeight: GAME_MODES[type].imageHeight
         });
     }
+    return DisplayedGameModes;
 };
+//Problem where grid is broken, appears to come from this function, where it keeps on making the --activityWidth 0px, and therefore breaking the grid
 const ResizeGrid = () => {
     //Add grid columns to the Activity Grid
-    const activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
+    let activityWidth = Number(getComputedStyle(document.body).getPropertyValue('--activityWidth').slice(0, -2));
+    if (activityWidth == 0 || activityWidth == undefined) {
+        activityWidth = 350; //safe guard
+    }
     let gridColumns = Math.floor((window.innerWidth - 150) / activityWidth);
     if (gridColumns > DISPLAYED_GAME_MODES.length) {
         gridColumns = DISPLAYED_GAME_MODES.length;
@@ -97,16 +102,13 @@ const LoadSVGs = () => {
 const LoadListeners = () => {
     const searchBar = document.getElementById("searchBar");
     searchBar.oninput = () => {
+        DISPLAYED_GAME_MODES = GetGameModes();
         const searchText = searchBar.value.toLowerCase();
         if (searchText == null || searchText == "") {
-            GetGameModes();
-            LoadGameModes(); //need to redraw the DOM
-            LoadSVGs();
-            LoadListeners();
+            LoadDOM();
             return;
         }
         //filter the gameModes in DISPLAYED_GAME_MODES, only the ones which match the searchText
-        GetGameModes();
         let i = 0;
         while (i != DISPLAYED_GAME_MODES.length) {
             const title = DISPLAYED_GAME_MODES[i].title.toLowerCase();
@@ -117,9 +119,7 @@ const LoadListeners = () => {
                 i += 1;
             }
         }
-        LoadGameModes(); //need to redraw the DOM
-        LoadSVGs();
-        LoadListeners();
+        LoadDOM(); //redraw DOM after changing DISPLAYED_GAME_MODES
     };
     for (const gameMode of DISPLAYED_GAME_MODES) {
         const type = gameMode.type;
@@ -150,12 +150,15 @@ const OpenPopup = (gameMode) => {
 const ClosePopup = () => {
     document.getElementById("popup").style.bottom = "-100vh";
 };
-const MAIN_HOME = () => {
-    GetGameModes();
-    ResizeGrid();
-    document.body.onresize = () => { ResizeGrid(); };
+const LoadDOM = () => {
     LoadGameModes();
     LoadSVGs();
     LoadListeners();
+};
+const MAIN_HOME = () => {
+    DISPLAYED_GAME_MODES = GetGameModes();
+    LoadDOM();
+    ResizeGrid();
+    document.body.onresize = () => { ResizeGrid(); };
 };
 MAIN_HOME();

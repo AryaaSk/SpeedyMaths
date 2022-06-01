@@ -282,7 +282,7 @@ const arrayToFractionAnswer = (fraction) => {
 };
 GAME_MODES["fractionAddition"] = {
     displayTitle: "Fraction Addition",
-    displayImage: "Fractions",
+    displayImage: "FractionAddition",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "70%",
     questionCallback: () => {
@@ -306,5 +306,29 @@ GAME_MODES["fractionAddition"] = {
         Section("Find Common Denominator", "To add together 2 fractions, first you need to make sure they have the same denomiantor, to do this try and find the LCM of the 2 denominators, if you are stuck then you can just multiply both of them together."),
         Section("Add together Numerators", "Once you have a common multiple for the denominators, multiply both sides of the fraction until the denominator has reached that.\nThen once both fractions have the same denominator, you can just add them together."),
         Section("Simplify Result", "After adding together both numerators, you will be left with a fraction with this total/(common denominator), then just simplify the fraction until you cannot reduce either side anymore.")
+    ]
+};
+GAME_MODES["fractionMultiplication"] = {
+    displayTitle: "Fraction Multiplication",
+    displayImage: "FractionMultiplication",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "70%",
+    questionCallback: () => {
+        const [numerator1, denominator1] = GenerateRandomNumbers([1, 10], 2);
+        const [numerator2, denominator2] = GenerateRandomNumbers([1, 10], 2);
+        const fraction1 = reduce(numerator1, denominator1);
+        const fraction2 = reduce(numerator2, denominator2);
+        const answerFraction = reduce(fraction1[0] * fraction2[0], fraction1[1] * fraction2[1]);
+        const wrongAnswer1 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 10));
+        const wrongAnswer2 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 10));
+        const wrongAnswer3 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 10));
+        const question = `${arrayToFractionQuestion(fraction1)} * ${arrayToFractionQuestion(fraction2)}`;
+        const possibleOptions = shuffle([arrayToFractionAnswer(answerFraction), arrayToFractionAnswer(wrongAnswer1), arrayToFractionAnswer(wrongAnswer2), arrayToFractionAnswer(wrongAnswer3)]);
+        return { question: question, answer: arrayToFractionAnswer(answerFraction), options: possibleOptions };
+    },
+    tutorialTitle: "How to multiply together Fractions",
+    sections: [
+        Section("Multiply Numerator and Denominator", "Just simply multiply both the numerators and both the denominators to give you your new fraction."),
+        Section("Reduce Result", "Once you have this result fraction, just simplify it by dividing both numerator and denominator by the same number until one of them cannot be divided anymore.")
     ]
 };
