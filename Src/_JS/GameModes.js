@@ -196,7 +196,10 @@ GAME_MODES["monicQuadratics"] = {
         return { question: question, answer: answer, options: possibleOptions };
     },
     tutorialTitle: "How to factorise a Monic Quadratic",
-    sections: []
+    sections: [
+        Section("Remember the factors", "It is a good idea to know a lot of factor pairs from memory, this is because once you know a lot you can find the correct factor pair which fits the equation."),
+        Section("Find where (F1 * F2 = C) AND (F1 + F2 = B)", "In monic quadratics, since the there is never a coefficient before the 𝑥, you just need to find a factor pair which satisfys these 2 conditions.\n B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
+    ]
 };
 const GenerateCoefficientsConstants = () => {
     return GenerateRandomNumbers([2, 9], 2).concat(GenerateRandomNumbers([1, 10], 2));
@@ -223,15 +226,27 @@ GAME_MODES["quadratics"] = {
         return { question: question, answer: answer, options: possibleOptions };
     },
     tutorialTitle: "How to factorise a Quadratic",
-    sections: []
+    sections: [
+        Section("Memorize factor pairs upto 100", "In quadratics, you will regularly be using factor pairs upto the number 100, after that it is usually better to solve the equation using other methods such as Completing the Square and the Quadratic Formula."),
+        Section("Find where (𝑥F1 * 𝑥F2) = A AND (F1 * F2) = C AND (𝑥F1 * F2) + (𝑥F2 * F1) = B", "This looks much more complicated than it actually is, once you know the factor pairs it should be simple. 𝑥F1 and 𝑥F2 refer to the factor pairs of 𝑥's coefficient, F1 and F2 refer to the factor pairs which make C.\n A, B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
+    ]
 };
+//Subscript 2: ₂
 GAME_MODES["logarithms"] = {
     displayTitle: "Logarithms",
-    displayImage: "Algebra",
+    displayImage: "Logarithms",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
-    imageHeight: "70%",
+    imageHeight: "35%",
     questionCallback: () => {
+        const [base] = GenerateRandomNumbers([2, 6], 1);
+        const [exponent] = GenerateRandomNumbers([0, 5], 1);
+        const result = base ** exponent;
+        const question = `log<sub>${base}</sub>(${result})`;
+        const answer = exponent;
+        return PackageQuestion(question, answer, 5);
     },
     tutorialTitle: "How to calculate Logarithms",
-    sections: []
+    sections: [
+        Section("Think about exponents", "Logarithms are just the inverse to exponents, for example 2^𝑥 = 8, is the same as 𝑥 = log₂(8), therefore you can solve 𝑥 to be 3, due to exponents practice.")
+    ]
 };
