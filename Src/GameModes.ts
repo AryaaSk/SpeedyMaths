@@ -253,6 +253,7 @@ GAME_MODES["squareRoots4Digits"] = {
     ]
 };
 
+
 //Algebra X Symbol: 𝑥
 //Square Symbol: ²
 GAME_MODES["monicQuadratics"] = {
@@ -279,9 +280,10 @@ GAME_MODES["monicQuadratics"] = {
         return { question: question, answer: answer, options: possibleOptions };
     },
 
-    tutorialTitle: "How to Factorise a Monic Quadratic",
+    tutorialTitle: "How to factorise a Monic Quadratic",
     sections: []
 };
+
 
 const GenerateCoefficientsConstants = () => {
     return GenerateRandomNumbers([2, 9], 2).concat(GenerateRandomNumbers([1, 10], 2));
@@ -313,6 +315,20 @@ GAME_MODES["quadratics"] = {
         return { question: question, answer: answer, options: possibleOptions };
     },
 
-    tutorialTitle: "How to Factorise a Quadratic",
+    tutorialTitle: "How to factorise a Quadratic",
     sections: []
 };
+
+GAME_MODES["logarithms"] = {
+    displayTitle: "Logarithms",
+    displayImage: "Algebra",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "70%",
+
+    questionCallback: () => {
+        
+    },
+
+    tutorialTitle: "How to calculate Logarithms",
+    sections: []
+}

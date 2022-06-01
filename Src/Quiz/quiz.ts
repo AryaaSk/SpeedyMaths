@@ -59,11 +59,11 @@ const UpdateTimerLoop = async (startTime: number) => {
 
 const DoQuestion = (question: Question) => {
     const promise = new Promise((resolve) => {
-        document.getElementById("question")!.innerText = question.question;
-        document.getElementById("option1")!.innerText = question.options[0];
-        document.getElementById("option2")!.innerText = question.options[1];
-        document.getElementById("option3")!.innerText = question.options[2];
-        document.getElementById("option4")!.innerText = question.options[3];
+        document.getElementById("question")!.innerHTML = question.question;
+        document.getElementById("option1")!.innerHTML = question.options[0];
+        document.getElementById("option2")!.innerHTML = question.options[1];
+        document.getElementById("option3")!.innerHTML = question.options[2];
+        document.getElementById("option4")!.innerHTML = question.options[3];
 
         document.getElementById("option1")!.style.backgroundColor = "";
         document.getElementById("option2")!.style.backgroundColor = "";

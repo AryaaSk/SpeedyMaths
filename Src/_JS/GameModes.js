@@ -195,7 +195,7 @@ GAME_MODES["monicQuadratics"] = {
         const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
         return { question: question, answer: answer, options: possibleOptions };
     },
-    tutorialTitle: "How to Factorise a Monic Quadratic",
+    tutorialTitle: "How to factorise a Monic Quadratic",
     sections: []
 };
 const GenerateCoefficientsConstants = () => {
@@ -222,6 +222,16 @@ GAME_MODES["quadratics"] = {
         const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
         return { question: question, answer: answer, options: possibleOptions };
     },
-    tutorialTitle: "How to Factorise a Quadratic",
+    tutorialTitle: "How to factorise a Quadratic",
+    sections: []
+};
+GAME_MODES["logarithms"] = {
+    displayTitle: "Logarithms",
+    displayImage: "Algebra",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "70%",
+    questionCallback: () => {
+    },
+    tutorialTitle: "How to calculate Logarithms",
     sections: []
 };

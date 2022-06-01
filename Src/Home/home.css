@@ -69,14 +69,15 @@ body {
 
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 20% 80%;
+    grid-template-rows: auto minmax(520px, 60%);
 
-    transition: 500ms;
+    transition: 500ms bottom ease-out;
 }
 #popupContent {
     height: 100%;
     width: 100%;
     padding: 0;
+    overflow: auto;
 
     border-top: 1px solid rgb(190, 190, 190);;
     background-color: rgb(245, 245, 245);

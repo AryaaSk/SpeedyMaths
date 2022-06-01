@@ -1,16 +1,16 @@
 # Speedy Maths
 ## A maths education app which teaches you about techniques to use to get faster at mental maths.
 
+## Here is the URL: https://speedymaths-b7f6e.web.app
+
 ### To build
 I built my own custom build engine, in python, it just takes all html, css, js and asset files, and puts them into a singular directory where all files are on the same level. This was so I could easily just send this folder to any hosting service.\
-If you want to use this for your own Vanilla-TS projects, then you can just download the [Build.py](build.py) file, and modify the Src folder and CompiledJS folder, and Asset folder locations.
+If you want to use this for your own Vanilla-TS projects, then you can just download the [Build.py](build.py) file, place it in the root of your project, and modify the *Src folder* and *CompiledJS folder*, and *Assets folder* locations.
 
 ```
 SHIFT + COMMAND + B - Select tsc: build
 python3 build.py
 ```
-
-Here is the URL: https://speedymaths-b7f6e.web.app
 
 ## The Home Screen
 When building this website, I aimed to make it feel as similar to a mobile app as a native app.
