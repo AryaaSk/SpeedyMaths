@@ -28,7 +28,7 @@ const InitHTML = () => {
         document.getElementById("startGame")!.style.display = "block";
 
         if (QUIZ_TIME != undefined) {
-            document.getElementById("startGame")!.style.display = "none";
+            document.getElementById("startGame")!.style.display = "none"; 
         }
     }
 }
