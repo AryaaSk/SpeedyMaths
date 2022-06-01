@@ -22,7 +22,6 @@ const InitHTML = () => {
         document.getElementById("currentPartyCode").style.display = "none";
     }
     else {
-        document.getElementById("goBack").style.display = "none";
         document.getElementById("createParty").style.display = "none";
         document.getElementById("enterCode").style.display = "none";
         document.getElementById("currentPartyCode").style.display = "block";
@@ -37,8 +36,13 @@ const InitHTML = () => {
 };
 const InitListeners = () => {
     document.getElementById("goBack").onclick = () => {
-        const url = "/Src/Home/home.html";
-        location.href = url;
+        if (PARTY_CODE == -1) { //when user is not in a party we just send them back to home screen
+            const url = "/Src/Home/home.html";
+            location.href = url;
+        }
+        else {
+            LeaveParty(); //if they are in a party then we need to follow the proper procedure
+        }
     };
     document.getElementById("username").onclick = () => {
         const newUsername = prompt("Enter a new username");
