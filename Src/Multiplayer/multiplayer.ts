@@ -7,7 +7,7 @@ let QUIZ_TIME: number | undefined = undefined;
 
 //DOM MANIPULTION
 const InitHTML = () => {
-    (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
+    document.getElementById("username")!.innerText = USERNAME;
 
     const urlParams = new URLSearchParams(window.location.search);
     const title = urlParams.get('title')!;
@@ -113,7 +113,7 @@ const ChangeUsername = (username: string) => {
     USERNAME = username;
     localStorage.setItem("username", username);
     FirebaseWrite("Players/" + USER_ID + "/username", username);
-    (<HTMLInputElement>document.getElementById("username")!).value = USERNAME;
+    document.getElementById("username")!.innerText = USERNAME;
 }
 
 const UpdateFirebase = async () => {

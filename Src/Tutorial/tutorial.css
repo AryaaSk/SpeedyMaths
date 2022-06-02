@@ -20,7 +20,7 @@ header {
 #goBack {
     height: 40px; 
     max-height: 90%;
-    width: max-content;
+    width: 40px;
     padding-left: 10px;
     padding-right: 10px;
     margin-left: 10px;
@@ -28,9 +28,9 @@ header {
     text-align: center;
 
     color: inherit;
+    border-radius: 5px;
     background-color: rgb(225, 225, 225);
     border: none;
-    border-radius: 5px;
     font-size: 1.4rem !important;
 
     transition: 100ms;

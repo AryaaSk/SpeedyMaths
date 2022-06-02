@@ -128,8 +128,8 @@ main {
     height: 40px; 
     max-height: 90%;
     width: max-content;
-    text-align: center;
 
+    text-align: center;
     color: inherit;
     background-color: rgb(225, 225, 225);
     border: none;
@@ -143,6 +143,9 @@ main {
 }
 
 #goBack {
+    width: 40px;
+    padding-left: 10px;
+    padding-right: 10px;
     margin-right: 20px;
 }
 
@@ -198,4 +201,12 @@ main {
     height: auto;
     width: max-content;
     margin: 0 auto;
+
+    font-size: 20px;
+    list-style: disc;
+
+    font-weight: bold;
 }
+li::before {
+    color: var(--themeColour);
+  }

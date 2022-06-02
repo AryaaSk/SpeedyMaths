@@ -14,7 +14,7 @@ let PARTY_CODE;
 let QUIZ_TIME = undefined;
 //DOM MANIPULTION
 const InitHTML = () => {
-    document.getElementById("username").value = USERNAME;
+    document.getElementById("username").innerText = USERNAME;
     const urlParams = new URLSearchParams(window.location.search);
     const title = urlParams.get('title');
     document.getElementById("title").innerText = title;
@@ -103,7 +103,7 @@ const ChangeUsername = (username) => {
     USERNAME = username;
     localStorage.setItem("username", username);
     FirebaseWrite("Players/" + USER_ID + "/username", username);
-    document.getElementById("username").value = USERNAME;
+    document.getElementById("username").innerText = USERNAME;
 };
 const UpdateFirebase = () => __awaiter(void 0, void 0, void 0, function* () {
     //Check if the user already has a node in the Players list in firebase, if not then create one
