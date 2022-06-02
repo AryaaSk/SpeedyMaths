@@ -29,7 +29,7 @@ const ResizeGrid = () => {
         activityWidth = 350; //safe guard
     }
 
-    let gridColumns = Math.floor((window.innerWidth - 150) / activityWidth);
+    let gridColumns = Math.floor((window.innerWidth - 300) / activityWidth);
     if (gridColumns > DISPLAYED_GAME_MODES.length) {
         gridColumns = DISPLAYED_GAME_MODES.length;
     }

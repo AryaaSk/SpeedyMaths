@@ -8,6 +8,8 @@ const GetTutorial = () => {
 };
 const InitTutorial = () => {
     document.getElementById("title").innerText = TUTORIAL.title;
+    const contents = document.getElementById("contents");
+    contents.innerHTML = "";
     for (const section of TUTORIAL.sections) {
         const sectionElement = document.createElement("div");
         sectionElement.className = "section";
@@ -19,7 +21,7 @@ const InitTutorial = () => {
         contentElement.innerText = section.content;
         sectionElement.append(subtitleElement);
         sectionElement.append(contentElement);
-        document.body.append(sectionElement);
+        contents.append(sectionElement);
     }
     document.getElementById("goBack").onclick = () => {
         const url = "/Src/Home/home.html";

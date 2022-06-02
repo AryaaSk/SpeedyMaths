@@ -27,6 +27,8 @@ for path,dirs,files in os.walk(srcFolder):
         filePaths.append(File(f"{path}/{file}", file, "html"))
     for file in fnmatch.filter(files, '*.css'):
         filePaths.append(File(f"{path}/{file}", file, "css"))
+    for file in fnmatch.filter(files, '*.json'):
+        filePaths.append(File(f"{path}/{file}", file, "json"))
 for path,dirs,files in os.walk(compiledJSFolder):
     for file in fnmatch.filter(files, '*.js'):
         filePaths.append(File(f"{path}/{file}", file, "js"))
