@@ -8,35 +8,10 @@ body {
 
     --fontColour: #123456;
     color: var(--fontColour);
-}
 
-header {
     display: grid;
-    grid-template-columns: max-content auto;
-    grid-template-rows: 100%;
-    place-items: center;
-}
-
-#goBack {
-    height: 40px; 
-    max-height: 90%;
-    width: 40px;
-    padding-left: 10px;
-    padding-right: 10px;
-    margin-left: 10px;
-
-    text-align: center;
-
-    color: inherit;
-    border-radius: 5px;
-    background-color: rgb(225, 225, 225);
-    border: none;
-    font-size: 1.4rem !important;
-
-    transition: 100ms;
-}
-#goBack:active {
-    background-color: rgb(190, 190, 190);
+    grid-template-columns: 100%;
+    grid-template-rows: max-content auto;
 }
 
 #titleWrapper {
@@ -48,8 +23,7 @@ header {
     justify-content: left;
 }
 #title {
-    margin-left: 20px;
-    margin-right: 20px;
+    margin: 0;
     text-decoration: underline;
 }
 
