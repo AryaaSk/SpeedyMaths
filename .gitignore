@@ -5,3 +5,6 @@
 #Generated files
 /dist
 /.firebase
+
+#System Files
+.DS_Store
