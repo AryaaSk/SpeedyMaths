@@ -4,6 +4,7 @@ const DEFAULT_ACTIVITY_COLOUR = "#123456";
 const DEFAULT_ACTIVITY_HEIGHT = "70%";
 //QUIZ HELPERS
 const DEFAULT_INCORRECT_ANSWER_VICINITY = 50;
+const DEFAULT_DP = 2;
 const GenerateRandomNumbers = (range, quantity) => {
     const numberList = [];
     for (let i = 0; i != quantity; i += 1) {
@@ -29,18 +30,26 @@ function shuffle(array) {
     }
     return array;
 }
-const PackageQuestion = (question, answer, vicinity, wrapper) => {
+const Round = (num, dp) => {
+    const precision = 10 ** dp;
+    const multiplied = num * precision;
+    const rounded = Math.round(multiplied);
+    const original = rounded / precision;
+    return original;
+};
+const PackageQuestion = (question, answer, vicinity, wrapper, dp) => {
     const incorrectVicinity = (vicinity == undefined) ? DEFAULT_INCORRECT_ANSWER_VICINITY : vicinity;
+    const roundDP = (dp == undefined) ? DEFAULT_DP : dp;
     let possibleOptions = [];
     const possible1 = GenerateIncorrectAnswer(answer, incorrectVicinity);
     const possible2 = GenerateIncorrectAnswer(answer, incorrectVicinity);
     const possible3 = GenerateIncorrectAnswer(answer, incorrectVicinity);
     //now apply the wrapper - wrapper will be in form of x, for example if you wanted a Cos wrapper: "cos(x)"
     const questionWrapper = (wrapper == undefined) ? "x" : wrapper;
-    const answerWrapped = questionWrapper.replace("x", String(answer));
-    const possible1Wrapped = questionWrapper.replace("x", String(possible1));
-    const possible2Wrapped = questionWrapper.replace("x", String(possible2));
-    const possible3Wrapped = questionWrapper.replace("x", String(possible3));
+    const answerWrapped = questionWrapper.replace("x", String(Round(answer, roundDP))); //also rounding them to avoid too many decimal places
+    const possible1Wrapped = questionWrapper.replace("x", String(Round(possible1, roundDP)));
+    const possible2Wrapped = questionWrapper.replace("x", String(Round(possible2, roundDP)));
+    const possible3Wrapped = questionWrapper.replace("x", String(Round(possible3, roundDP)));
     possibleOptions = [answerWrapped, possible1Wrapped, possible2Wrapped, possible3Wrapped];
     possibleOptions = shuffle(possibleOptions);
     return { question: question, answer: answerWrapped, options: possibleOptions };
@@ -126,7 +135,7 @@ GAME_MODES["squareNumbers"] = {
     imageHeight: DEFAULT_ACTIVITY_HEIGHT,
     questionCallback: () => {
         const [num] = GenerateRandomNumbers([0, 20], 1);
-        const question = `${num} squared`;
+        const question = `${num}²`;
         const answer = num * num;
         return PackageQuestion(question, answer);
     },
@@ -274,10 +283,10 @@ function reduce(numerator, denominator) {
     gcd = gcd(numerator, denominator);
     return [numerator / gcd, denominator / gcd];
 }
-const arrayToFractionQuestion = (fraction) => {
+const formatFractionQuestion = (fraction) => {
     return `<sup>${fraction[0]}</sup>/<sub>${fraction[1]}</sub>`;
 };
-const arrayToFractionAnswer = (fraction) => {
+const formatFractionAnswer = (fraction) => {
     return `<div class="numerator">${fraction[0]}</div><div class="denominator">${fraction[1]}</div>`;
 };
 GAME_MODES["fractionAddition"] = {
@@ -297,9 +306,9 @@ GAME_MODES["fractionAddition"] = {
         const wrongAnswer1 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 5));
         const wrongAnswer2 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 5));
         const wrongAnswer3 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 5));
-        const question = `${arrayToFractionQuestion(fraction1)} + ${arrayToFractionQuestion(fraction2)}`;
-        const possibleOptions = shuffle([arrayToFractionAnswer(answerFraction), arrayToFractionAnswer(wrongAnswer1), arrayToFractionAnswer(wrongAnswer2), arrayToFractionAnswer(wrongAnswer3)]);
-        return { question: question, answer: arrayToFractionAnswer(answerFraction), options: possibleOptions };
+        const question = `${formatFractionQuestion(fraction1)} + ${formatFractionQuestion(fraction2)}`;
+        const possibleOptions = shuffle([formatFractionAnswer(answerFraction), formatFractionAnswer(wrongAnswer1), formatFractionAnswer(wrongAnswer2), formatFractionAnswer(wrongAnswer3)]);
+        return { question: question, answer: formatFractionAnswer(answerFraction), options: possibleOptions };
     },
     tutorialTitle: "How to add together Fractions",
     sections: [
@@ -308,6 +317,7 @@ GAME_MODES["fractionAddition"] = {
         Section("Simplify Result", "After adding together both numerators, you will be left with a fraction with this total/(common denominator), then just simplify the fraction until you cannot reduce either side anymore.")
     ]
 };
+//Right Arrow: ⟶
 GAME_MODES["fractionMultiplication"] = {
     displayTitle: "Fraction Multiplication",
     displayImage: "FractionMultiplication",
@@ -322,13 +332,32 @@ GAME_MODES["fractionMultiplication"] = {
         const wrongAnswer1 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 10));
         const wrongAnswer2 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 10));
         const wrongAnswer3 = reduce(GenerateIncorrectAnswer(answerFraction[0], 10), GenerateIncorrectAnswer(answerFraction[1], 10));
-        const question = `${arrayToFractionQuestion(fraction1)} * ${arrayToFractionQuestion(fraction2)}`;
-        const possibleOptions = shuffle([arrayToFractionAnswer(answerFraction), arrayToFractionAnswer(wrongAnswer1), arrayToFractionAnswer(wrongAnswer2), arrayToFractionAnswer(wrongAnswer3)]);
-        return { question: question, answer: arrayToFractionAnswer(answerFraction), options: possibleOptions };
+        const question = `${formatFractionQuestion(fraction1)} * ${formatFractionQuestion(fraction2)}`;
+        const possibleOptions = shuffle([formatFractionAnswer(answerFraction), formatFractionAnswer(wrongAnswer1), formatFractionAnswer(wrongAnswer2), formatFractionAnswer(wrongAnswer3)]);
+        return { question: question, answer: formatFractionAnswer(answerFraction), options: possibleOptions };
     },
     tutorialTitle: "How to multiply together Fractions",
     sections: [
         Section("Multiply Numerator and Denominator", "Just simply multiply both the numerators and both the denominators to give you your new fraction."),
         Section("Reduce Result", "Once you have this result fraction, just simplify it by dividing both numerator and denominator by the same number until one of them cannot be divided anymore.")
+    ]
+};
+GAME_MODES["fractionToPercentage"] = {
+    displayTitle: "Fraction ⟶ Percentage",
+    displayImage: "FractionToPercentage",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "60%",
+    questionCallback: () => {
+        const [numerator] = GenerateRandomNumbers([1, 10], 1);
+        const [denominator] = GenerateRandomNumbers([5, 20], 1); //sqewing distribution of fractions to >1
+        const fraction = reduce(numerator, denominator);
+        const question = `${formatFractionQuestion(fraction)}`;
+        const answer = numerator / denominator * 100;
+        return PackageQuestion(question, answer, undefined, "x%"); //custom % wrapper
+    },
+    tutorialTitle: "How to convert Fractions to Percentages",
+    sections: [
+        Section("Find Decimal", "Divide numerator / denominator"),
+        Section("Convert to Percentage", "You have the decimal representation of the number, however you need to multiply by 100 to convert it to a percentage")
     ]
 };
