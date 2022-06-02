@@ -91,7 +91,7 @@ body {
     grid-template-columns: 100%;
     grid-template-rows: auto max-content;
 
-    transition: 500ms bottom ease-out;
+    transition: 275ms bottom ease-out;
 }
 #popupContent {
     height: 70vh;
