@@ -284,6 +284,7 @@ GAME_MODES["cubeRoots"] = {
 
 //Algebra X Symbol: 𝑥
 //Square Symbol: ²
+/*
 GAME_MODES["monicQuadratics"] = {
     displayTitle: "Monic Quadratics",
     displayImage: "MonicQuadratics",
@@ -352,6 +353,7 @@ GAME_MODES["quadratics"] = {
         Section("Find where (𝑥F1 * 𝑥F2) = A AND (F1 * F2) = C AND (𝑥F1 * F2) + (𝑥F2 * F1) = B", "This looks much more complicated than it actually is, once you know the factor pairs it should be simple. 𝑥F1 and 𝑥F2 refer to the factor pairs of 𝑥's coefficient, F1 and F2 refer to the factor pairs which make C.\n A, B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
     ]
 };
+*/
 
 
 //Subscript 2: ₂

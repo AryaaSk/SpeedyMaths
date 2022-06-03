@@ -201,62 +201,76 @@ GAME_MODES["cubeRoots"] = {
 };
 //Algebra X Symbol: 𝑥
 //Square Symbol: ²
+/*
 GAME_MODES["monicQuadratics"] = {
     displayTitle: "Monic Quadratics",
     displayImage: "MonicQuadratics",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "45%",
+
     questionCallback: () => {
         const [root1, root2] = GenerateRandomNumbers([1, 10], 2);
         const coefficient = root1 + root2;
         const yIntercept = root1 * root2;
         const question = `Factorise 𝑥² + ${coefficient}𝑥 + ${yIntercept}`;
         const answer = `(𝑥 + ${root1})(𝑥 + ${root2})`;
+
         const [pair1Root1, pair1Root2] = GenerateRandomNumbers([1, 10], 2); //Generating wrong answers
         const [pair2Root1, pair2Root2] = GenerateRandomNumbers([1, 10], 2);
         const [pair3Root1, pair3Root2] = GenerateRandomNumbers([1, 10], 2);
         const wrongAnswer1 = `(𝑥 + ${pair1Root1})(𝑥 + ${pair1Root2})`;
         const wrongAnswer2 = `(𝑥 + ${pair2Root1})(𝑥 + ${pair2Root2})`;
         const wrongAnswer3 = `(𝑥 + ${pair3Root1})(𝑥 + ${pair3Root2})`;
+
         const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
         return { question: question, answer: answer, options: possibleOptions };
     },
+
     tutorialTitle: "How to factorise a Monic Quadratic",
     sections: [
         Section("Remember the factors", "It is a good idea to know a lot of factor pairs from memory, this is because once you know a lot you can find the correct factor pair which fits the equation."),
         Section("Find where (F1 * F2 = C) AND (F1 + F2 = B)", "In monic quadratics, since the there is never a coefficient before the 𝑥, you just need to find a factor pair which satisfys these 2 conditions.\n B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
     ]
 };
+
+
 const GenerateCoefficientsConstants = () => {
     return GenerateRandomNumbers([2, 9], 2).concat(GenerateRandomNumbers([1, 10], 2));
-};
+}
 GAME_MODES["quadratics"] = {
     displayTitle: "Quadratics",
     displayImage: "Quadratics",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "40%",
+
     questionCallback: () => {
         const [bracket1Coefficient, bracket2Coefficient, bracket1Constant, bracket2Constant] = GenerateCoefficientsConstants();
+
         const a = bracket1Coefficient * bracket2Coefficient; //using a, b, c from polynomial: ax² + bx + c
         const b = (bracket1Coefficient * bracket2Constant) + (bracket2Coefficient * bracket1Constant);
         const c = bracket1Constant * bracket2Constant;
+
         const question = `Factorise ${a}𝑥² + ${b}𝑥 + ${c}`;
         const answer = `(${bracket1Coefficient}𝑥 + ${bracket1Constant})(${bracket2Coefficient}𝑥 + ${bracket2Constant})`;
+
         const [wrong1Bracket1Coefficient, wrong1Bracket2Coefficient, wrong1Bracket1Constant, wrong1Bracket2Constant] = GenerateCoefficientsConstants(); //Generating wrong answers
         const [wrong2Bracket1Coefficient, wrong2Bracket2Coefficient, wrong2Bracket1Constant, wrong2Bracket2Constant] = GenerateCoefficientsConstants();
         const [wrong3Bracket1Coefficient, wrong3Bracket2Coefficient, wrong3Bracket1Constant, wrong3Bracket2Constant] = GenerateCoefficientsConstants();
         const wrongAnswer1 = `(${wrong1Bracket1Coefficient}𝑥 + ${wrong1Bracket1Constant})(${wrong1Bracket2Coefficient}𝑥 + ${wrong1Bracket2Constant})`;
         const wrongAnswer2 = `(${wrong2Bracket1Coefficient}𝑥 + ${wrong2Bracket1Constant})(${wrong2Bracket2Coefficient}𝑥 + ${wrong2Bracket2Constant})`;
         const wrongAnswer3 = `(${wrong3Bracket1Coefficient}𝑥 + ${wrong3Bracket1Constant})(${wrong3Bracket2Coefficient}𝑥 + ${wrong3Bracket2Constant})`;
+
         const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
         return { question: question, answer: answer, options: possibleOptions };
     },
+
     tutorialTitle: "How to factorise a Quadratic",
     sections: [
         Section("Memorize factor pairs upto 100", "In quadratics, you will regularly be using factor pairs upto the number 100, after that it is usually better to solve the equation using other methods such as Completing the Square and the Quadratic Formula."),
         Section("Find where (𝑥F1 * 𝑥F2) = A AND (F1 * F2) = C AND (𝑥F1 * F2) + (𝑥F2 * F1) = B", "This looks much more complicated than it actually is, once you know the factor pairs it should be simple. 𝑥F1 and 𝑥F2 refer to the factor pairs of 𝑥's coefficient, F1 and F2 refer to the factor pairs which make C.\n A, B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
     ]
 };
+*/
 //Subscript 2: ₂
 GAME_MODES["logarithms"] = {
     displayTitle: "Logarithms",
