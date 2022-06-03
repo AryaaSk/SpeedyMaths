@@ -361,3 +361,22 @@ GAME_MODES["fractionToPercentage"] = {
         Section("Convert to Percentage", "You have the decimal representation of the number, however you need to multiply by 100 to convert it to a percentage")
     ]
 };
+GAME_MODES["numberPercentages"] = {
+    displayTitle: "Percentages",
+    displayImage: "Percentages",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "60%",
+    questionCallback: () => {
+        const [percentage] = GenerateRandomNumbers([0, 100], 1);
+        const [original] = GenerateRandomNumbers([0, 500], 1); //always a nice question
+        const question = `${percentage}% of ${original}`;
+        const answer = (percentage / 100) * original;
+        return PackageQuestion(question, answer);
+    },
+    tutorialTitle: "How to calculate Percentages of Numbers",
+    sections: [
+        Section("Multiply by %/100", "The simplest way to find percentages is to multiply the original number by the (percentage/100).\nFor example if the original number was 500, and the percentage was 40%, then you can find the answer by doing 500 * 0.4 = 200."),
+        Section("Convert Percentage to Fraction", "Another way of calculating percentages which is sometimes easier, is to convert the percentage into a fraction.\nUsing the example above (40% of 500), we can convert 40% into 2/5, and then we can easily find the answer by multiplying 500 by 2/5, which gives us 200."),
+        Section("Swap the question", "Another technique you can use is flipping the question.\nIn the example above (40% of 500), you can instead turn the question into 500% of 40, and then just multiply 40 by 5, to get the answer 200.")
+    ]
+};

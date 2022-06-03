@@ -3,10 +3,45 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            display: grid;
+            place-content: center;
+        }
+
+        #logo {
+            height: 200px;
+            width: 200px;
+            
+            border-radius: 20px;
+
+            visibility: hidden;
+            opacity: 0;
+            transition: 500ms opacity;
+            -webkit-transition: opacity 500ms;
+            -moz-transition: opacity 500ms;
+            -o-transition: opacity 500ms;
+        }
+    </style>
 </head>
 <body>
+
+    <img id="logo" src="/Assets/Icon.png" draggable="false"/>
+
     <script>
-        location.href = "/Src/Home/home.html"; //Entry point
+        const LOGO_DELAY = 100;
+        const ENTRY_DELAY = 400;
+
+        setTimeout(() => {
+            const logo = document.getElementById("logo")
+            logo.style.visibility = "visible";
+            logo.style.opacity = "1";
+        }, LOGO_DELAY)
+
+        setTimeout(() => {
+            location.href = "/Src/Home/home.html"; //Entry point 400ms after delay
+        }, LOGO_DELAY + entryDelay);
     </script>
 </body>
 </html>

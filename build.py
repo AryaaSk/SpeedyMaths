@@ -63,6 +63,10 @@ for file in filePaths:
     srcPath = file.path
     destPath = f"dist/{file.name}"
 
+    if (file.type == "asset"): #don't interfere with file if it is an asset
+        shutil.copy2(srcPath, destPath)
+        continue
+
     f = open(srcPath, "r")
     try:
         lines = f.readlines()
@@ -70,18 +74,15 @@ for file in filePaths:
         print(f"Unable to parse file: {srcPath}")
     f.close()
 
-    fileString = ""
-    if file.type == "asset": #there is no need to modify assets
-        for line in lines:
-            fileString += line
-    else:
-        #we need to modify this data, especially the <script> tags in the HTML
-        for line in lines:
+    fileString = "" #we need to modify this data, especially the <script> tags in the HTML
+    for line in lines:
             #for each line of the file, we need to try and replace all the paths in searchReplace
             for path in searchReplace:
                 line = line.replace(path.searchFor, path.replaceWith)
 
             fileString += line
+        
+        
 
     f = open(destPath, 'w')
     f.write(fileString)

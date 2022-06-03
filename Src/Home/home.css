@@ -15,9 +15,17 @@ body {
                                   supported by Chrome, Edge, Opera and Firefox */
 
     --activityWidth: 350px;
+    --activityHeight: 300px;
     --fontColour: #123456;
     color: var(--fontColour);
 }
+@media only screen and (max-width : 380px) {
+    body {
+        --activityWidth: 300px;
+        --activityHeight: 250px;
+    }
+}
+
 #searchBar:focus {
     outline: none;
 }
@@ -45,7 +53,7 @@ body {
 
     display: grid;
     grid-template-columns: repeat(1, var(--activityWidth)); /*Grid columns are calculated in JS, HOWEVER THIS SPECIFIC PROPERTY DOES NOT SEEM TO GET UPDATED*/
-    grid-auto-rows: 300px;
+    grid-auto-rows: var(--activityHeight);
     gap: 50px;
     
     place-items: center;
@@ -91,6 +99,7 @@ body {
     grid-template-columns: 100%;
     grid-template-rows: auto max-content;
 
+    will-change: transition;
     transition: 275ms bottom ease-out;
 }
 #popupContent {
