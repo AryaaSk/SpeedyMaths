@@ -284,7 +284,6 @@ GAME_MODES["cubeRoots"] = {
 
 //Algebra X Symbol: 𝑥
 //Square Symbol: ²
-/*
 GAME_MODES["monicQuadratics"] = {
     displayTitle: "Monic Quadratics",
     displayImage: "MonicQuadratics",
@@ -353,7 +352,6 @@ GAME_MODES["quadratics"] = {
         Section("Find where (𝑥F1 * 𝑥F2) = A AND (F1 * F2) = C AND (𝑥F1 * F2) + (𝑥F2 * F1) = B", "This looks much more complicated than it actually is, once you know the factor pairs it should be simple. 𝑥F1 and 𝑥F2 refer to the factor pairs of 𝑥's coefficient, F1 and F2 refer to the factor pairs which make C.\n A, B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
     ]
 };
-*/
 
 
 //Subscript 2: ₂
@@ -505,5 +503,38 @@ GAME_MODES["numberPercentages"] = {
         Section("Multiply by %/100", "The simplest way to find percentages is to multiply the original number by the (percentage/100).\nFor example if the original number was 500, and the percentage was 40%, then you can find the answer by doing 500 * 0.4 = 200."),
         Section("Convert Percentage to Fraction", "Another way of calculating percentages which is sometimes easier, is to convert the percentage into a fraction.\nUsing the example above (40% of 500), we can convert 40% into 2/5, and then we can easily find the answer by multiplying 500 by 2/5, which gives us 200."),
         Section("Swap the question", "Another technique you can use is flipping the question.\nIn the example above (40% of 500), you can instead turn the question into 500% of 40, and then just multiply 40 by 5, to get the answer 200.")
+    ]
+}
+
+
+const formatRatio = (ratio: number[]) => {
+    return `${ratio[0]} : ${ratio[1]}`;
+}
+GAME_MODES["ratios"] = {
+    displayTitle: "Ratios",
+    displayImage: "Ratio",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "60%",
+
+    questionCallback: () => {
+        const [left, right] = GenerateRandomNumbers([1, 15], 2);
+        const [scale] = GenerateRandomNumbers([1, 10], 1);
+        const ratio = reduce(left, right);
+        const multiple = [ratio[0] * scale, ratio[1] * scale];
+
+        const answer = formatRatio(ratio);
+        const question = `Simply ${formatRatio(multiple)}`;
+        const wrong1 = formatRatio([GenerateIncorrectAnswer(ratio[0], 10), GenerateIncorrectAnswer(ratio[1], 10)]);
+        const wrong2 = formatRatio([GenerateIncorrectAnswer(ratio[0], 10), GenerateIncorrectAnswer(ratio[1], 10)]);
+        const wrong3 = formatRatio([GenerateIncorrectAnswer(ratio[0], 10), GenerateIncorrectAnswer(ratio[1], 10)]);
+        const possibleOptions = shuffle([answer, wrong1, wrong2, wrong3]);
+
+        return { question: question, answer: answer, options: possibleOptions };
+    },
+
+    tutorialTitle: "How to simplify Ratios",
+    sections: [
+        Section("Find HCF", "HCF stands for Highest Common Factor, it is the highest factor which both numbers can divide by and remain a whole number."),
+        Section("Divide by HCF", "Once you have found the HCF, you can find the simplifyed ratio by just divide both sides by the HCF.")
     ]
 }

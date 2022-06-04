@@ -201,76 +201,62 @@ GAME_MODES["cubeRoots"] = {
 };
 //Algebra X Symbol: 𝑥
 //Square Symbol: ²
-/*
 GAME_MODES["monicQuadratics"] = {
     displayTitle: "Monic Quadratics",
     displayImage: "MonicQuadratics",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "45%",
-
     questionCallback: () => {
         const [root1, root2] = GenerateRandomNumbers([1, 10], 2);
         const coefficient = root1 + root2;
         const yIntercept = root1 * root2;
         const question = `Factorise 𝑥² + ${coefficient}𝑥 + ${yIntercept}`;
         const answer = `(𝑥 + ${root1})(𝑥 + ${root2})`;
-
         const [pair1Root1, pair1Root2] = GenerateRandomNumbers([1, 10], 2); //Generating wrong answers
         const [pair2Root1, pair2Root2] = GenerateRandomNumbers([1, 10], 2);
         const [pair3Root1, pair3Root2] = GenerateRandomNumbers([1, 10], 2);
         const wrongAnswer1 = `(𝑥 + ${pair1Root1})(𝑥 + ${pair1Root2})`;
         const wrongAnswer2 = `(𝑥 + ${pair2Root1})(𝑥 + ${pair2Root2})`;
         const wrongAnswer3 = `(𝑥 + ${pair3Root1})(𝑥 + ${pair3Root2})`;
-
         const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
         return { question: question, answer: answer, options: possibleOptions };
     },
-
     tutorialTitle: "How to factorise a Monic Quadratic",
     sections: [
         Section("Remember the factors", "It is a good idea to know a lot of factor pairs from memory, this is because once you know a lot you can find the correct factor pair which fits the equation."),
         Section("Find where (F1 * F2 = C) AND (F1 + F2 = B)", "In monic quadratics, since the there is never a coefficient before the 𝑥, you just need to find a factor pair which satisfys these 2 conditions.\n B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
     ]
 };
-
-
 const GenerateCoefficientsConstants = () => {
     return GenerateRandomNumbers([2, 9], 2).concat(GenerateRandomNumbers([1, 10], 2));
-}
+};
 GAME_MODES["quadratics"] = {
     displayTitle: "Quadratics",
     displayImage: "Quadratics",
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "40%",
-
     questionCallback: () => {
         const [bracket1Coefficient, bracket2Coefficient, bracket1Constant, bracket2Constant] = GenerateCoefficientsConstants();
-
         const a = bracket1Coefficient * bracket2Coefficient; //using a, b, c from polynomial: ax² + bx + c
         const b = (bracket1Coefficient * bracket2Constant) + (bracket2Coefficient * bracket1Constant);
         const c = bracket1Constant * bracket2Constant;
-
         const question = `Factorise ${a}𝑥² + ${b}𝑥 + ${c}`;
         const answer = `(${bracket1Coefficient}𝑥 + ${bracket1Constant})(${bracket2Coefficient}𝑥 + ${bracket2Constant})`;
-
         const [wrong1Bracket1Coefficient, wrong1Bracket2Coefficient, wrong1Bracket1Constant, wrong1Bracket2Constant] = GenerateCoefficientsConstants(); //Generating wrong answers
         const [wrong2Bracket1Coefficient, wrong2Bracket2Coefficient, wrong2Bracket1Constant, wrong2Bracket2Constant] = GenerateCoefficientsConstants();
         const [wrong3Bracket1Coefficient, wrong3Bracket2Coefficient, wrong3Bracket1Constant, wrong3Bracket2Constant] = GenerateCoefficientsConstants();
         const wrongAnswer1 = `(${wrong1Bracket1Coefficient}𝑥 + ${wrong1Bracket1Constant})(${wrong1Bracket2Coefficient}𝑥 + ${wrong1Bracket2Constant})`;
         const wrongAnswer2 = `(${wrong2Bracket1Coefficient}𝑥 + ${wrong2Bracket1Constant})(${wrong2Bracket2Coefficient}𝑥 + ${wrong2Bracket2Constant})`;
         const wrongAnswer3 = `(${wrong3Bracket1Coefficient}𝑥 + ${wrong3Bracket1Constant})(${wrong3Bracket2Coefficient}𝑥 + ${wrong3Bracket2Constant})`;
-
         const possibleOptions = shuffle([answer, wrongAnswer1, wrongAnswer2, wrongAnswer3]);
         return { question: question, answer: answer, options: possibleOptions };
     },
-
     tutorialTitle: "How to factorise a Quadratic",
     sections: [
         Section("Memorize factor pairs upto 100", "In quadratics, you will regularly be using factor pairs upto the number 100, after that it is usually better to solve the equation using other methods such as Completing the Square and the Quadratic Formula."),
         Section("Find where (𝑥F1 * 𝑥F2) = A AND (F1 * F2) = C AND (𝑥F1 * F2) + (𝑥F2 * F1) = B", "This looks much more complicated than it actually is, once you know the factor pairs it should be simple. 𝑥F1 and 𝑥F2 refer to the factor pairs of 𝑥's coefficient, F1 and F2 refer to the factor pairs which make C.\n A, B and C come from the polynomial a𝑥² + b𝑥 + c, which will be in the question.")
     ]
 };
-*/
 //Subscript 2: ₂
 GAME_MODES["logarithms"] = {
     displayTitle: "Logarithms",
@@ -392,5 +378,32 @@ GAME_MODES["numberPercentages"] = {
         Section("Multiply by %/100", "The simplest way to find percentages is to multiply the original number by the (percentage/100).\nFor example if the original number was 500, and the percentage was 40%, then you can find the answer by doing 500 * 0.4 = 200."),
         Section("Convert Percentage to Fraction", "Another way of calculating percentages which is sometimes easier, is to convert the percentage into a fraction.\nUsing the example above (40% of 500), we can convert 40% into 2/5, and then we can easily find the answer by multiplying 500 by 2/5, which gives us 200."),
         Section("Swap the question", "Another technique you can use is flipping the question.\nIn the example above (40% of 500), you can instead turn the question into 500% of 40, and then just multiply 40 by 5, to get the answer 200.")
+    ]
+};
+const formatRatio = (ratio) => {
+    return `${ratio[0]} : ${ratio[1]}`;
+};
+GAME_MODES["ratios"] = {
+    displayTitle: "Ratios",
+    displayImage: "Ratio",
+    imageColour: DEFAULT_ACTIVITY_COLOUR,
+    imageHeight: "60%",
+    questionCallback: () => {
+        const [left, right] = GenerateRandomNumbers([1, 15], 2);
+        const [scale] = GenerateRandomNumbers([1, 10], 1);
+        const ratio = reduce(left, right);
+        const multiple = [ratio[0] * scale, ratio[1] * scale];
+        const answer = formatRatio(ratio);
+        const question = `Simply ${formatRatio(multiple)}`;
+        const wrong1 = formatRatio([GenerateIncorrectAnswer(ratio[0], 10), GenerateIncorrectAnswer(ratio[1], 10)]);
+        const wrong2 = formatRatio([GenerateIncorrectAnswer(ratio[0], 10), GenerateIncorrectAnswer(ratio[1], 10)]);
+        const wrong3 = formatRatio([GenerateIncorrectAnswer(ratio[0], 10), GenerateIncorrectAnswer(ratio[1], 10)]);
+        const possibleOptions = shuffle([answer, wrong1, wrong2, wrong3]);
+        return { question: question, answer: answer, options: possibleOptions };
+    },
+    tutorialTitle: "How to simplify Ratios",
+    sections: [
+        Section("Find HCF", "HCF stands for Highest Common Factor, it is the highest factor which both numbers can divide by and remain a whole number."),
+        Section("Divide by HCF", "Once you have found the HCF, you can find the simplifyed ratio by just divide both sides by the HCF.")
     ]
 };
