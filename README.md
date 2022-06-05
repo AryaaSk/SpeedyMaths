@@ -1,7 +1,8 @@
 # Speedy Maths
 ## A maths education app which teaches you about techniques to use to get faster at mental maths.
 
-## Here is the URL: https://speedymaths-b7f6e.web.app
+## URL: https://speedymaths-b7f6e.web.app
+## iOS App Store: https://apps.apple.com/us/app/speedy-maths/id1627441940
 
 ### To build
 I built my own custom build engine, in python, it just takes all html, css, js and asset files, and puts them into a singular directory where all files are on the same level. This was so I could easily just send this folder to any hosting service.\
