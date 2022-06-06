@@ -1,0 +1,17 @@
+{
+    "name": "Speedy Maths",
+    "short_name": "Maths",
+    "description": "A maths education app which teaches you about techniques to use to get faster at mental maths.",
+    "icons": [
+      {
+        "src": "Icon.png",
+        "sizes": "256x256",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "./",
+    "scope": ".",
+    "display": "fullscreen",
+
+    "background_color": "#ffffff"
+  }
