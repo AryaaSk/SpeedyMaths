@@ -3,7 +3,7 @@
 
 ## URL: https://speedymaths-b7f6e.web.app
 ## iOS App Store: https://apps.apple.com/us/app/speedy-maths/id1627441940
-
+## PWA:
 I also made it a PWA, which is installable by simply going to the website, then clicking on the share button, and click "Add to Home Screen".\
 **One thing I noticed when making it a PWA, was that the Icon provided in the manifest.json must be at least 1024x1024 pixels, otherwise iOS won't use it for the home screen**.
 
