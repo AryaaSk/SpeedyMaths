@@ -2,7 +2,7 @@ let USER_ID: string;
 let USERNAME: string;
 let PARTY_CODE: number;
 let QUIZ_TIME: number | undefined = undefined;
-
+let RECORD: { username: string, time: number } | undefined = undefined;
 
 
 //DOM MANIPULTION
@@ -12,6 +12,13 @@ const InitHTML = () => {
     const urlParams = new URLSearchParams(window.location.search);
     const title = urlParams.get('title')!;
     document.getElementById("title")!.innerText = title;
+
+    if (RECORD == undefined) {
+        document.getElementById("record")!.innerText = "Current Record: Not set";
+    }
+    else {
+        document.getElementById("record")!.innerText = `Current Record: ${RECORD.username} - ${RECORD.time}s`;
+    }
 
     if (PARTY_CODE == -1) { //user is not inside a party
         document.getElementById("currentPartyCode")!.style.display = "none";
@@ -154,6 +161,21 @@ const UpdateQuizTime = () => {
     FirebaseWrite("Parties/" + PARTY_CODE + "/playerTimes/" + USER_ID, QUIZ_TIME);
 }
 
+const UpdateLeaderboard = async () => {
+    //check if QUIZ_TIME is faster than the fastest time in the leaderboard
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('type');
+
+    const fastestTime: any = await FirebaseRead("Leaderboards/" + gameType);
+    if (fastestTime == undefined || fastestTime.time > QUIZ_TIME!) {
+        FirebaseWrite("Leaderboards/" + gameType, {
+            username: USERNAME,
+            time: QUIZ_TIME
+        });
+        document.getElementById("record")!.innerText = `Current Record: ${USERNAME} - ${QUIZ_TIME}s`;
+    }
+}
+
 
 
 //MANAGING PARTIES
@@ -267,8 +289,12 @@ const MAIN_MULTIPLAYER = async () => {
     await UpdateFirebase();
     FirebaseListen("Players/" + USER_ID + "/currentPartyCode", PartyCodeCallback);
     
+    const gameType = urlParams.get('type');
+    RECORD = await <any>FirebaseRead("Leaderboards/" + gameType);
+
     if (QUIZ_TIME != undefined) {
         UpdateQuizTime();
+        UpdateLeaderboard();
     }
 
     //After this point, PARTY_CODE remains constant, since whenever it changes the page will be refreshed

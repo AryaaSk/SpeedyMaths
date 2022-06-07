@@ -65,7 +65,7 @@ input[type="button"] {
 main {
     display: grid;
     grid-template-columns: 100%;
-    grid-template-rows: 10% max-content max-content auto;
+    grid-template-rows: max-content max-content max-content auto;
     gap: 50px;
     place-items: center;
 }
