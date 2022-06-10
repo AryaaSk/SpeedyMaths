@@ -17,6 +17,9 @@ const GenerateRandomNumbers = (range, quantity) => {
 const GenerateIncorrectAnswer = (answer, vicinity) => {
     const answerOffset = Math.floor(Math.random() * vicinity * 2); //incorrect answer will be within the vicinity of the answer, e.g. vicinity = 100, incorrect answer will always be within 100 of the answer
     const incorrectAnswer = answer - vicinity + answerOffset;
+    if (incorrectAnswer < 0) {
+        return GenerateIncorrectAnswer(answer, vicinity); //to prevent negative numbers
+    }
     return incorrectAnswer;
 };
 function shuffle(array) {
@@ -83,7 +86,9 @@ GAME_MODES["subtraction"] = {
     imageColour: DEFAULT_ACTIVITY_COLOUR,
     imageHeight: "20%",
     questionCallback: () => {
-        const [num1, num2] = GenerateRandomNumbers([0, 100], 2);
+        const [int1, int2] = GenerateRandomNumbers([0, 100], 2);
+        const num1 = (int1 >= int2) ? int1 : int2; //to prevent it from going into negative numbers
+        const num2 = (int1 < int2) ? int1 : int2;
         const question = `${num1} - ${num2}`;
         const answer = num1 - num2;
         return PackageQuestion(question, answer);
