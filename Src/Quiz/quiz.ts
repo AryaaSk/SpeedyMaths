@@ -127,6 +127,7 @@ const FinishQuiz = (timeTaken: number) => {
     if (gameType == "multiplayer") {
         document.getElementById("finishButtons")!.style.gridTemplateColumns = "100%";
         document.getElementById("doneButton")!.style.width = "100%";
+        document.getElementById("replayButton")!.style.display = "none";
     }
 
     document.getElementById("doneButton")!.onclick = () => {
