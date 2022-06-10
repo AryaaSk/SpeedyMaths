@@ -76,9 +76,19 @@ body {
     width: 90%;
 }
 
-#doneButton {
-    height: 60%;
+#finishButtons {
+    height: 100%;
     width: 90%;
+
+    display: grid;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: 100%;
+    place-items: center;
+}
+
+.finishButton {
+    height: 60%;
+    width: 95%;
 
     background-color: var(--themeColour);
     border: none;

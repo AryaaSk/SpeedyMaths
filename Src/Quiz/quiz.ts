@@ -21,7 +21,7 @@ const InitQuiz = () => {
     document.getElementById("timeTaken")!.style.display = "none";
 
     (<HTMLProgressElement>document.getElementById("progressBar")!).value = 0;
-    document.getElementById("doneButton")!.style.display = "none";
+    document.getElementById("finishButtons")!.style.display = "none";
 }
 
 const CreateQuestions = () => {
@@ -118,9 +118,16 @@ const FinishQuiz = (timeTaken: number) => {
     document.getElementById("progressBar")!.style.display = "none";
 
     document.getElementById("timeTaken")!.style.display = "grid"; //since I use that to center the text
-    document.getElementById("doneButton")!.style.display = "block";
-
     document.getElementById("timeTaken")!.innerText = `Time: ${timeTaken}s`;
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameType = urlParams.get('gameType');
+    document.getElementById("finishButtons")!.style.display = "grid";
+
+    if (gameType == "multiplayer") {
+        document.getElementById("finishButtons")!.style.gridTemplateColumns = "100%";
+        document.getElementById("doneButton")!.style.width = "100%";
+    }
 
     document.getElementById("doneButton")!.onclick = () => {
         //@ts-expect-error
@@ -137,6 +144,9 @@ const FinishQuiz = (timeTaken: number) => {
             const title = urlParams.get('title')!;
             location.href = `/Src/Multiplayer/multiplayer.html?type=${type}&&title=${title}&&time=${timeTaken}`;
         }
+    }
+    document.getElementById("replayButton")!.onclick = () => {
+        location.reload();
     }
 }
 
