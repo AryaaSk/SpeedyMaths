@@ -1,9 +1,9 @@
-//Generating Question Callbacks
+const KEY_BINDS = ["1", "9", "q", "i", "space"]; //starting from top-left, going clockwise, last one is for replay button
 const QUIZ_LENGTH = 10;
 const INCORRECT_ANSWER_TIME_PENALTY_MS = 5000;
-let WRONGLY_ANSWERED: any = 0; //Meant to be type number, but since 
+let WRONGLY_ANSWERED: any = 0; //Meant to be type number, but since
 
-
+declare const isMobile: boolean;
 
 const InitQuiz = () => {
     WRONGLY_ANSWERED = 0;
@@ -60,10 +60,10 @@ const UpdateTimerLoop = async (startTime: number) => {
 const DoQuestion = (question: Question) => {
     const promise = new Promise((resolve) => {
         document.getElementById("question")!.innerHTML = question.question;
-        document.getElementById("option1")!.innerHTML = question.options[0];
-        document.getElementById("option2")!.innerHTML = question.options[1];
-        document.getElementById("option3")!.innerHTML = question.options[2];
-        document.getElementById("option4")!.innerHTML = question.options[3];
+        document.getElementById("option1")!.innerHTML = (isMobile == true) ? question.options[0] : question.options[0] + `<br><label class="keybind">${KEY_BINDS[0].toUpperCase()}</label>`;
+        document.getElementById("option2")!.innerHTML = (isMobile == true) ? question.options[1] : question.options[1] + `<br><label class="keybind">${KEY_BINDS[1].toUpperCase()}</label>`;
+        document.getElementById("option3")!.innerHTML = (isMobile == true) ? question.options[2] : question.options[2] + `<br><label class="keybind">${KEY_BINDS[2].toUpperCase()}</label>`;
+        document.getElementById("option4")!.innerHTML = (isMobile == true) ? question.options[3] : question.options[3] + `<br><label class="keybind">${KEY_BINDS[3].toUpperCase()}</label>`;
 
         document.getElementById("option1")!.style.backgroundColor = "";
         document.getElementById("option2")!.style.backgroundColor = "";
@@ -74,6 +74,14 @@ const DoQuestion = (question: Question) => {
         document.getElementById("option2")!.onclick = () => { clickedAnswer(1); }
         document.getElementById("option3")!.onclick = () => { clickedAnswer(2); }
         document.getElementById("option4")!.onclick = () => { clickedAnswer(3); }
+
+        document.onkeydown = ($e) => {
+            const key = $e.key.toLowerCase();
+            if (key == KEY_BINDS[0]) { clickedAnswer(0); }
+            else if (key == KEY_BINDS[1]) { clickedAnswer(1); }
+            else if (key == KEY_BINDS[2]) { clickedAnswer(2); }
+            else if (key == KEY_BINDS[3]) { clickedAnswer(3); }
+        }
 
         const clickedAnswer = (index: number) => { //resolves true if the answer was correct, false is the answer was wrong
             if (question.options[index] == question.answer) {
@@ -123,6 +131,7 @@ const FinishQuiz = (timeTaken: number) => {
     const urlParams = new URLSearchParams(window.location.search);
     const gameType = urlParams.get('gameType');
     document.getElementById("finishButtons")!.style.display = "grid";
+    (<HTMLInputElement>document.getElementById("replayButton")!).value += ` (${KEY_BINDS[4]})`;
 
     if (gameType == "multiplayer") {
         document.getElementById("finishButtons")!.style.gridTemplateColumns = "100%";
@@ -144,6 +153,16 @@ const FinishQuiz = (timeTaken: number) => {
             const type = urlParams.get('type')!;
             const title = urlParams.get('title')!;
             location.href = `/Src/Multiplayer/multiplayer.html?type=${type}&&title=${title}&&time=${timeTaken}`;
+        }
+    }
+    document.onkeydown = ($e) => {
+        const key = $e.key.toLowerCase();
+        let replayKeybind = KEY_BINDS[4];
+        if (replayKeybind.toLowerCase() == "space") {
+            replayKeybind = " ";
+        }
+        if (key == replayKeybind) {
+            location.reload();
         }
     }
     document.getElementById("replayButton")!.onclick = () => {

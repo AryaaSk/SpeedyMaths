@@ -59,6 +59,10 @@ body {
         background-color: rgb(190, 190, 190);
     }
 }
+.keybind {
+    font-size: 2rem;
+    font-weight: 300;
+}
 
 #timeTaken {
     grid-column: 1 / 3; 
